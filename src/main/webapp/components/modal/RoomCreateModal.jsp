@@ -10,7 +10,6 @@
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
     <style>
-
         #section_modal_container {
             background: #FFF4E8;
             border-radius: 20px;
@@ -22,7 +21,6 @@
             justify-content: center;
             padding: 2rem;
         }
-
         .header_background {
             background: #B8988F;
             width: 260px;
@@ -34,14 +32,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-
         .header {
             background: #C6ABA3;
             width: 255px;
             height: 55px;
             border-radius: 10px;
         }
-
         .header_title {
             font-family: "Galmuri11";
             font-weight: 700;
@@ -52,13 +48,11 @@
             height: 100%;
             font-size: 32px;
         }
-
         #room_create_form {
             font-family: "Galmuri11";
             font-weight: 400;
             margin: 2rem auto;
         }
-
         #content_room_title {
             width: 493px;
             height: 73px;
@@ -69,7 +63,6 @@
             align-items: center;
             justify-content: center;
         }
-
         #room_title_input {
             color: #000000;
             width: 100%;
@@ -82,24 +75,20 @@
             border: none;
             outline: none;
         }
-
         #room_title_input::placeholder {
             color: #A9A9A9;
         }
-
         #content_room_type {
             display: flex;
             justify-content: center;
             gap: 2rem;
             margin: 2rem auto;
         }
-
         .room_type_radio_group {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-
         .item_room_type {
             appearance: none;
             width: 24px;
@@ -110,23 +99,19 @@
             background-position: center;
             cursor: pointer;
         }
-
         .item_room_type:checked {
             background-image: url('../../assets/images/roomTypeGreen.png');
         }
-
         .content_room_password {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
         }
-
         .password_label {
             font-size: 16px;
             color: #8D8B8B;
         }
-
         #item_room_password {
             background: #FFF9EC;
             border-radius: 10px;
@@ -140,17 +125,14 @@
             font-weight: 400;
             outline: none;
         }
-
         #item_room_password::placeholder {
             color: #A9A9A9;
         }
-
         #item_room_password:disabled {
             background: #FCFCFC;
             border-color: #A9A9A9;
             cursor: not-allowed;
         }
-
         #room_create_button {
             background-image: url('../../assets/images/roomCreateBtn.png');
             background-size: 100% 100%;
@@ -170,11 +152,9 @@
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
             color: #522B09;
         }
-
         #room_create_button:hover {
             opacity: 0.8;
         }
-
         #room_create_button:active {
             transform: scale(0.95);
         }

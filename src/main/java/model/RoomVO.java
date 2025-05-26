@@ -1,11 +1,11 @@
-package dto;
+package model;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class RoomDTO {
+public class RoomVO {
     private String roomId;
     private String title;
     private String isPublic;

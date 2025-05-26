@@ -9,3 +9,4 @@ web.xml
 .DS_Store
 .settings
 .metadata
+/bin/
