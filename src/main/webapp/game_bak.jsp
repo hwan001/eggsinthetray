@@ -5,7 +5,7 @@
         <meta charset="UTF-8" />
         <title>Eggs in the Tray</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/game.css">
-
+        <script src="${pageContext.request.contextPath}/assets/js/game.js"> </script>
 
         <%
             int rows = 15;
@@ -19,35 +19,6 @@
 
             String roomId = request.getParameter("roomId");
         %>
-        <script>
-          let isWhiteTurn = true; // 흰색부터 시작
-
-          document.addEventListener("DOMContentLoaded", function () {
-            const blocks = document.querySelectorAll(".boardBlock");
-
-            blocks.forEach(block => {
-              block.addEventListener("click", function () {
-                // 이미 놓을 수 없는 자리면 무시
-                if (block.classList.contains("disabled") || block.classList.contains("forbidden")) {
-                  return;
-                }
-
-                // 흰색 또는 검은색 클래스 추가
-                if (isWhiteTurn) {
-                  block.classList.add("white");
-                } else {
-                  block.classList.add("black");
-                }
-
-                // 돌이 놓인 자리로 간주해 .disabled 추가
-                block.classList.add("disabled");
-
-                // 다음 턴으로 넘김
-                isWhiteTurn = !isWhiteTurn;
-              });
-            });
-          });
-        </script>
 	</head>
 	<body>
         <div id="wrapper">
@@ -63,18 +34,8 @@
                        boolean isDisabled = (i == 0 && j == 0); //
                        boolean isForbidden = (i == 1 && j == 1);
               %>
-              <div class="boardBlock">
-                  <div class="stoneLayer"></div>
-              </div>
+                <div class="boardBlock <%= isDisabled ? "disabled " : "" %> <%= isForbidden ? " forbidden" : "" %>"></div>
               <% } } %>
-            </div>
-
-            <div class="boardBlock" style="position: relative; width: 40px; height: 40px; background-color: #ccc;">
-              <div class="stoneLayer black"
-                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                          background-image: url('/eggsinthetray/assets/images/gameBlackEgg.png');
-                          background-size: cover; background-repeat: no-repeat; background-position: center; z-index: 3;">
-              </div>
             </div>
 
             <div id="chatWrapper" >
@@ -88,6 +49,5 @@
             </div>
 
         </div>
-        <script src="${pageContext.request.contextPath}/assets/js/game.js"> </script>
 	</body>
 </html>

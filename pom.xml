@@ -23,7 +23,13 @@
             <groupId>javax.websocket</groupId>
             <artifactId>javax.websocket-api</artifactId>
             <version>1.1</version>
+        </dependency>
 
+        <!-- JSONObject 객체 사용 -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version> <!-- 최신 안정 버전 (또는 20240111 등도 사용 가능) -->
         </dependency>
 
 
@@ -35,14 +41,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- 필요 시 Tyrus 구현체 추가 (선택) -->
-        <!--
-        <dependency>
-          <groupId>org.glassfish.tyrus.bundles</groupId>
-          <artifactId>tyrus-standalone-client</artifactId>
-          <version>1.17</version>
-        </dependency>
-        -->
     </dependencies>
 
     <build>

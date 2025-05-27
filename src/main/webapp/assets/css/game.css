@@ -7,72 +7,87 @@
 	width: 1440px;
 	height: 1024px;
 	transform: translate(-50%, -50%);
-	background-image: url("/eggsinthetray/assets/images/game/gameBackground.png");
+	background-image: url("/eggsinthetray/assets/images/gameBackground.png");
 	z-index: -1;
 
 	overflow: hidden; /* 추가 시 튀어나가는 요소 안 보이게 */
 }
 
-/* 채팅 */
-#chatWrapper {
-    position: absolute;
-    top: 63%;
-    left: 78%;
-    transform: translate(-50%, -50%);
-    width: 318px;
-    height: 478px;
+/* 바둑판 */
+#boardWrapper {
+    position: relative; /* 반드시 있어야 absolute 자식 기준 됨 */
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    width: fit-content;
+    height: fit-content;
 
-    /* 핵심! 고정 크기 보장 */
-    flex-shrink: 0;
-    flex-grow: 0;
-    box-sizing: border-box;
+    top: 20%;
+	left: 5%;
 
-    background-color: rgba(255, 0, 0, 0.1); /* 테스트용 배경색 */
-    z-index: 2;
+	display: grid;
+
+	gap: 0;
+	z-index: 2;
 }
 
-.chatInner {
-    position: relative; /* 내부 absolute 기준 */
-    width: 100%;
-    height: 100%;
+/* 각 자리 판단 */
+.boardBlock {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-image: url("/eggsinthetray/assets/images/gameBoardDefaultBlock.png");
+  background-size: cover;
+  box-sizing: border-box;
+  cursor: pointer;
+  z-index: 1;
 }
 
-/* 채팅 배경 */
-.chatDisplay {
+/* 공통 레이어 설정 */
+.stoneLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 2;
+}
+
+/* 돌 이미지 */
+.stoneLayer.black {
+  background-image: url("/eggsinthetray/assets/images/gameBlackEgg.png");
+}
+
+.stoneLayer.white {
+  background-image: url("/eggsinthetray/assets/images/gameWhiteEgg.png");
+}
+
+/* hover 시만 hoverLayer 표시 */
+.boardBlock:not(.disabled):hover {
+  background-image: url("/eggsinthetray/assets/images/gameBoardSelectedBlock.png");
+  background-color: rgba(0, 255, 0, 0.2);
+  background-blend-mode: multiply;
+}
+
+/* 금수 처리 (필요시 활성화) */
+.boardBlock.forbidden {
+  background-image: url("/eggsinthetray/assets/images/gameBoardForbiddenBlock.png");
+  opacity: 0.3;
+}
+
+/* 이미 둔 자리: 커서 없앰 */
+.boardBlock.disabled {
+  cursor: default;
+}
+
+.chickHead{
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("/eggsinthetray/assets/images/game/chattingBackground.png");
-    background-repeat: no-repeat;
+	width: 68px;
+	height: 60px;
+    background-image: url("/eggsinthetray/assets/images/gameChickHead.png");
     background-size: contain;
-    z-index: -1;
-}
-
-/* 입력창과 버튼 묶음 */
-.chatInputWrapper {
-    display: flex;
-    top: 100px;
-    left: 0;
-    padding: 8px;
-    gap: 4px;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 1;
-}
-
-#chatInput {
-    flex: 1;
-    padding: 6px;
-    font-size: 14px;
-}
-
-.chatInputWrapper button {
-    padding: 6px 10px;
-    font-size: 14px;
-    cursor: pointer;
+    background-repeat: no-repeat;
+    z-index: 3;
 }

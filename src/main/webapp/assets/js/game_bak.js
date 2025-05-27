@@ -19,7 +19,9 @@ function init() {
     const roomId = getRoomIdFromURL();
     connectGameWebSocket(roomId);
     connectChatSocket(roomId);
+    setupBoardEventHandlers();
 }
+
 
 
 // Game
@@ -44,13 +46,15 @@ function handleGameMessage(event) {
 
     if (data.type === "start") {
         myColor = data.color;
-
+        isMyTurn = (myColor === "B");
+        updateStatus("게임 시작. 당신은 " + (myColor === "B" ? "흑" : "백"));
     } else if (data.type === "move") {
-
+        drawStone(data.x, data.y, data.color);
+        isMyTurn = (data.color !== myColor);
     } else if (data.type === "gameover") {
-
+        updateStatus("게임 종료. 승자: " + data.winner);
     } else if (data.type === "board") {
-
+        drawBoard(data.map);
     }
 }
 
@@ -95,22 +99,37 @@ function drawStone(x, y, color) {
 }
 
 
-// Timer
-let timer;
-
-function startTimer() {
-    clearTimeout(timer); // 이전 타이머 정리
-    timer = setTimeout(() => {
-        alert("시간 초과! 상대가 응답하지 않아 승리 처리됩니다.");
-        gameWebSocket.send(JSON.stringify({
-            type: "timeout",
-            userId: userId
-        }));
-    }, 30000); // 예: 30초
+// Chatting
+function connectChatSocket(roomId) {
+    chatSocket = new WebSocket("ws://" + location.host + "/eggsinthetray/chat/" + roomId);
+    chatSocket.onopen = () => console.log("채팅 소켓 연결됨");
+    chatSocket.onmessage = handleChatMessage;
 }
 
-function stopTimer() {
-    clearTimeout(timer);
+function handleChatMessage(event) {
+    appendChatMessage(event.data);
+}
+
+function appendChatMessage(html) {
+    console.log("appendChatMessage : " + html);
+    const chatArea = document.getElementById("chatDisplay");
+    if (!chatArea) {
+        console.warn("chatDisplay 요소가 없습니다");
+        return;
+    }
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
+    chatArea.appendChild(wrapper);
+}
+
+function sendChatMessage() {
+    const input = document.getElementById("chatInput");
+    const msg = input.value.trim();
+    if (msg !== "") {
+        chatSocket.send(msg);
+        console.log("sendChatMessage : " + msg);
+        input.value = ""; // 전송 후 입력창 비우기
+    }
 }
 
 
@@ -124,38 +143,16 @@ function updateStatus(text) {
     document.getElementById("status").textContent = text;
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM fully loaded");
-
-  const blocks = document.querySelectorAll(".boardBlock");
-  let isWhiteTurn = true;
-
-  blocks.forEach(block => {
-    const stoneLayer = block.querySelector(".stoneLayer"); // 각 block에 대한 stoneLayer를 미리 가져옴
-
-    block.addEventListener("click", function () {
-      if (block.classList.contains("disabled") || block.classList.contains("forbidden")) return;
-
-      console.log("stoneLayer:", stoneLayer);
-
-      // 클래스 추가
-      stoneLayer.classList.add(isWhiteTurn ? "white" : "black");
-      block.classList.add("disabled");
-
-      isWhiteTurn = !isWhiteTurn;
+function setupBoardEventHandlers() {
+    const blocks = document.getElementsByClassName("boardBlock");
+    Array.from(blocks).forEach((block, index) => {
+        block.addEventListener("click", () => {
+            const x = Math.floor(index / 15);
+            const y = index % 15;
+            sendMove(x, y);
+        });
     });
-
-    block.addEventListener("mouseenter", function () {
-      if (!block.classList.contains("disabled")) {
-        stoneLayer.style.display = "block";
-      }
-    });
-
-    block.addEventListener("mouseleave", function () {
-      stoneLayer.style.display = "none";
-    });
-  });
-});
+}
 
 // 실행
 window.onload = init;
