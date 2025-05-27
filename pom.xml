@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
@@ -25,6 +24,28 @@
             <version>1.1</version>
         </dependency>
 
+        <!-- Jakarta Servlet API -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JSON (org.json) -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230227</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Servlet API -->
         <dependency>
@@ -34,6 +55,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Gson for JSON processing -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+      
         <!-- JSON-P API -->
         <dependency>
             <groupId>javax.json</groupId>
@@ -48,20 +76,11 @@
             <version>1.1.4</version>
         </dependency>
 
-        <!-- 필요 시 Tyrus 구현체 추가 (선택) -->
-        <!--
-        <dependency>
-          <groupId>org.glassfish.tyrus.bundles</groupId>
-          <artifactId>tyrus-standalone-client</artifactId>
-          <version>1.17</version>
-        </dependency>
-        -->
     </dependencies>
 
     <build>
         <finalName>eggsinthetray</finalName>
         <plugins>
-            <!-- war 플러그인은 기본으로 포함됨 -->
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
@@ -69,6 +88,7 @@
                     <webappDirectory>${project.build.directory}/eggsinthetray</webappDirectory>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>
