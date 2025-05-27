@@ -16,10 +16,11 @@ public class KakaoOAuthService extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+	String clientId = getServletContext().getInitParameter("kakao.client_id");
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String kakaoUrl = "https://kauth.kakao.com/oauth/authorize"
 				+ "?response_type=code"
-				+ "&client_id=9842f3b5d39972114e3df176dbd060ad"
+				+ "&client_id=" + clientId;
 				+ "&redirect_uri=http://localhost:8090/eggsinthetray/kakaocallback";
 		response.sendRedirect(kakaoUrl);
 	}
