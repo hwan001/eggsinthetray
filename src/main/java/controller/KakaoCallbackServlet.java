@@ -36,8 +36,9 @@ public class KakaoCallbackServlet extends HttpServlet {
 	    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
 	    // body 파라미터 만들기
+	    String clientId = getServletContext().getInitParameter("kakao.client_id");
 	    String body = "grant_type=authorization_code"
-	                + "&client_id=9842f3b5d39972114e3df176dbd060ad"
+	                + "&client_id=" + clientId
 	                + "&redirect_uri=http://localhost:8090/eggsinthetray/kakaocallback"
 	                + "&code=" + code;
 	    
@@ -63,9 +64,10 @@ public class KakaoCallbackServlet extends HttpServlet {
 	    
 	    System.out.println("access token: " + accessToken);
 	    
-	    //session에 저장해서 ProfileServlet에 쓰기
+	    //accessToken session에 저장해서ProfileServlet에 쓰기
 	    HttpSession session = request.getSession();
 	    session.setAttribute("accessToken", accessToken);
+	    response.sendRedirect("profileservlet");
 	    
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

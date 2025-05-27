@@ -1,33 +1,20 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dto.MemberDTO;
+import util.DatabaseUtil;
 
 public class MemberDAO {
-	private Connection conn;
-
-    public MemberDAO() {
-        try {
-            Class.forName("oracle.jdbc.OracleDriver");
-            conn = DriverManager.getConnection(
-                "jdbc:oracle:thin:@db.avgmax.in:1521:xe", 
-                "EGGSINTHETRAY", 
-                "EGGSINTHETRAY1234"
-            );
-        } catch (Exception e) {
-            System.out.println("DB 연결 오류: " + e.getMessage());
-        }
-    }
 
     public MemberDTO findById(String memberId) {
         String sql = "SELECT * FROM member WHERE member_id = ?";
         
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try(Connection conn = DatabaseUtil.getConnection();
+        	PreparedStatement pstmt = conn.prepareStatement(sql)){
        
             pstmt.setString(1, memberId);
             ResultSet rs = pstmt.executeQuery();
@@ -56,7 +43,8 @@ public class MemberDAO {
         String sql = "INSERT INTO member (member_id, nickname, image_url, member_role, play_cnt, win_cnt, member_level) " 
         			+ "VALUES (?, ?, ?, 'user', 0, 0, 0)";
         
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try (Connection conn = DatabaseUtil.getConnection(); 
+        	PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1, member.getMemberId());
             pstmt.setString(2, member.getNickName());
             pstmt.setString(3, member.getImageUrl());
