@@ -2,3 +2,10 @@
 application.yaml
 target
 web.xml
+.classpath
+.project
+.idea
+.vscode
+.DS_Store
+.settings
+.metadata
