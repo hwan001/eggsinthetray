@@ -1,2 +1,5 @@
 /build/
 application.yaml
+target
+.classpath
+.project
