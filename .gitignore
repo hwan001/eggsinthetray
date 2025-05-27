@@ -1,2 +1,4 @@
 /build/
 application.yaml
+target
+web.xml
