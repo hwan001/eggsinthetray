@@ -1,4 +1,6 @@
 /build/
 application.yaml
 target
+.classpath
+.project
 web.xml
