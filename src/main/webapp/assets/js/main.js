@@ -1,0 +1,84 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const createBtn = document.getElementById("createRoomBtn");
+  const modalContainer = document.getElementById("createModal");
+
+  createBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch("../../components/modal/RoomCreateModal.html");
+      const html = await res.text();
+      modalContainer.innerHTML = html;
+      modalContainer.style.display = "block";
+
+      if (!document.getElementById("modalBackdrop")) {
+        const backdrop = document.createElement("div");
+        backdrop.id = "modalBackdrop";
+        backdrop.className = "modal-backdrop";
+        document.body.appendChild(backdrop);
+      }
+
+      setupRoomModalEvents(); //modal 함수
+    } catch (error) {
+      console.error("모달 로딩 실패:", error);
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "modalBackdrop" || e.target.id === "createModal") {
+      closeModal();
+    }
+  });
+
+  function closeModal() {
+    modalContainer.style.display = "none";
+    modalContainer.innerHTML = "";
+
+    const backdrop = document.getElementById("modalBackdrop");
+    if (backdrop) backdrop.remove();
+  }
+});
+
+
+// modal 기능 함수화 script -> main.js
+function setupRoomModalEvents() {
+  const publicRoom = document.getElementById('public_room');
+  const privateRoom = document.getElementById('private_room');
+  const passwordInput = document.getElementById('item_room_password');
+
+  if (!publicRoom || !privateRoom || !passwordInput) return;
+
+  publicRoom.addEventListener('change', function () {
+    if (this.checked) {
+      passwordInput.disabled = true;
+      passwordInput.value = '';
+    }
+  });
+
+  privateRoom.addEventListener('change', function () {
+    if (this.checked) {
+      passwordInput.disabled = false;
+    }
+  });
+
+  passwordInput.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/[^0-9]/g, '');
+    if (value.length > 4) value = value.slice(0, 4);
+    e.target.value = value;
+  });
+
+  // 초기 상태 설정
+  if (publicRoom.checked) {
+    passwordInput.disabled = true;
+  } else if (privateRoom.checked) {
+    passwordInput.disabled = false;
+  }
+}
+
+// Exp(추후 수정)
+// function setExp(percent) {
+//   const fill = document.querySelector('.exp-bar-fill');
+//   const label = document.querySelector('.exp-label');
+//   fill.style.width = percent + '%';
+//   label.textContent = `EXP: ${percent}%`;
+// }
+
+

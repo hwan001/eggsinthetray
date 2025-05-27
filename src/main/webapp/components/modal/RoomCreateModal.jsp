@@ -10,17 +10,6 @@
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
     <style>
-        #wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
         #section_modal_container {
             background: #FFF4E8;
@@ -189,101 +178,58 @@
         #room_create_button:active {
             transform: scale(0.95);
         }
-
-            
     </style>
+    
 </head>
 <body>
-    <div id="wrapper">
-        <div id="section_modal_container">
-            <div class="header_background">
-                <div class="header">
-                    <div class="header_title">
-                        <p>방 생성하기</p>
-                    </div>
+    <div id="section_modal_container">
+        <div class="header_background">
+            <div class="header">
+                <div class="header_title">
+                    <p>방 생성하기</p>
                 </div>
             </div>
-            <form id="room_create_form">
-                <div id="content_room_title">
-                    <input type="text" 
-                            id="room_title_input"
-                            placeholder="방 이름을 입력해주세요"
-                            maxlength="20"
-                            required>
-                </div>
-                <div id="content_room_type">
-                    <div class="room_type_radio_group">
-                        <input type="radio" 
-                                id="public_room" 
-                                name="roomType" 
-                                value="public" 
-                                class="item_room_type"
-                                checked>
-                        <label for="public_room" class="room_type_label">공개방</label>
-                    </div>
-                    <div class="room_type_radio_group">
-                        <input type="radio" 
-                                id="private_room" 
-                                name="roomType" 
-                                value="private" 
-                                class="item_room_type">
-                        <label for="private_room" class="room_type_label">비밀방</label>
-                    </div>
-                </div>
-                <div class="content_room_password">
-                    <label class="password_label">비밀번호</label>
-                    <input type="password"
-                            id="item_room_password" 
-                            placeholder="****"
-                            maxlength="4"
-                            disabled>
-                </div>
-                <button type="submit" id="room_create_button" form="room_create_form">
-                    방 생성
-                </button>
-            </form>
-            
         </div>
+        <form id="room_create_form">
+            <div id="content_room_title">
+                <input type="text" 
+                        id="room_title_input"
+                        placeholder="방 이름을 입력해주세요"
+                        maxlength="20"
+                        required>
+            </div>
+            <div id="content_room_type">
+                <div class="room_type_radio_group">
+                    <input type="radio" 
+                            id="public_room" 
+                            name="roomType" 
+                            value="public" 
+                            class="item_room_type"
+                            checked>
+                    <label for="public_room" class="room_type_label">공개방</label>
+                </div>
+                <div class="room_type_radio_group">
+                    <input type="radio" 
+                            id="private_room" 
+                            name="roomType" 
+                            value="private" 
+                            class="item_room_type">
+                    <label for="private_room" class="room_type_label">비밀방</label>
+                </div>
+            </div>
+            <div class="content_room_password">
+                <label class="password_label">비밀번호</label>
+                <input type="password"
+                        id="item_room_password" 
+                        placeholder="****"
+                        maxlength="4"
+                        disabled>
+            </div>
+            <button type="submit" id="room_create_button" form="room_create_form">
+                방 생성
+            </button>
+        </form>       
     </div>
-
-    <script>
-        // 라디오 버튼 변경 이벤트 리스너
-        const publicRoom = document.getElementById('public_room');
-        const privateRoom = document.getElementById('private_room');
-        const passwordInput = document.getElementById('item_room_password');
-
-        // 공개방 선택 시
-        publicRoom.addEventListener('change', function() {
-            if (this.checked) {
-                passwordInput.disabled = true;
-                passwordInput.value = '';
-            }
-        });
-
-        // 비밀방 선택 시
-        privateRoom.addEventListener('change', function() {
-            if (this.checked) {
-                passwordInput.disabled = false;
-            }
-        });
-
-        // 비밀번호 입력 제한 (숫자만 4자리)
-        document.getElementById('item_room_password').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^0-9]/g, '');
-            if (value.length > 4) {
-                value = value.slice(0, 4);
-            }
-            e.target.value = value;
-        });
-
-        // 페이지 로드 시 초기 상태 설정
-        document.addEventListener('DOMContentLoaded', function() {
-            if (publicRoom.checked) {
-                passwordInput.disabled = true;
-            } else if (privateRoom.checked) {
-                passwordInput.disabled = false;
-            }
-        });
-    </script>
+    
 </body>
 </html>
