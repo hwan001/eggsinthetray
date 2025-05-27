@@ -74,8 +74,9 @@
   cursor: pointer;
   margin: 0 auto;
 }
-
-
+.refreshBtn:hover {
+  opacity: 0.8;
+}
 
 .section_room {
   width: 632px;
@@ -172,6 +173,10 @@
   margin-left: 8px;
 }
 
+.item_joinBtn:hover {
+  opacity: 0.8;
+}
+
 .item_roomState {
   width: 35px;
   height: 35px;
@@ -215,6 +220,9 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+.soundBtn:hover {
+  opacity: 0.9;
+}
 
 .createBtn {
   width: 259px;
@@ -229,6 +237,10 @@
   cursor: pointer;
   margin: 0 auto;
 }
+.createBtn:hover {
+  opacity: 0.9;
+}
+
 .section_right{
   width: 332px;
   position: absolute;
@@ -236,8 +248,11 @@
   right: 10%;
 }
 .content_profile {
+  width:329px;
+  height:496px;
   position: relative;
   display: inline-block;
+  background-image: url("../images/mainProfile.png");
 }
 
 .content_profile img {
@@ -260,6 +275,43 @@
   border-radius: 25px;
 }
 
+#item_memberInfo {
+  position: absolute;
+  top: 50%; 
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  z-index: 1;
+}
+
+#item_memberInfo .item {
+  text-align: center;
+  font-family: 'galmuri11';
+  color: #512D0F;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#item_exp{
+  width: 250px;
+  height: 30px;
+  background-color: #fff;
+  border: 1px solid #555;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+.exp-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #f6d365, #F66E89);
+  width: 0%;
+  transition: width 0.5s ease;
+  opacity: 1;
+}
 
 .content_profile item{
   font-family: 'galmuri11';
@@ -271,4 +323,30 @@
   max-width: 300px;             
   aspect-ratio: 1 / 1;       
   height: auto;               
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+}
+
+#createModal { 
+    border-radius: 20px;
+    width: 611px;
+    height: 358px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 9999;
 }
