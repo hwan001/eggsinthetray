@@ -23,7 +23,7 @@ public class JsonResponseUtil {
         writeJsonResponse(response, null, message);
     }
 
-    private static void writeJsonResponse(HttpServletResponse response, Object data, String message) throws IOException {
+    private static void writeJsonResponse(HttpServletResponse response, Object data, String message) throws IOException {    
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         
@@ -32,4 +32,4 @@ public class JsonResponseUtil {
         out.write(jsonResponse);
         out.flush();
     }
-} 
+}

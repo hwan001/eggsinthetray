@@ -1,10 +1,8 @@
 package service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import dao.RoomDAO;
-import dto.RoomDTO;
+import dto.RoomRequest;
+import dto.RoomResponse;
 
 import lombok.RequiredArgsConstructor;
 import model.RoomVO;
@@ -14,14 +12,14 @@ public class RoomService {
 
     private final RoomDAO roomDAO;
 
-    public boolean createRoom(RoomDTO roomDTO) {
+    public RoomResponse createRoom(RoomRequest roomReq) {
         RoomVO roomVO = RoomVO.builder()
-            .roomId(roomDTO.getRoomId())
-            .title(roomDTO.getTitle())
-            .isPublic(roomDTO.getIsPublic())
-            .password(roomDTO.getPassword())
-            .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+            .roomId(roomReq.getRoomId())
+            .title(roomReq.getTitle())
+            .isPublic(roomReq.getIsPublic())
+            .password(roomReq.getPassword())
             .build();
-        return roomDAO.insertRoom(roomVO);
+        roomDAO.insertRoom(roomVO);
+        return RoomResponse.from(roomDAO.selectRoomById(roomVO.getRoomId()));
     }
 }
