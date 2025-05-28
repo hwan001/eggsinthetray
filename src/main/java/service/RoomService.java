@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.UUID;
 
 import dao.RoomDAO;
@@ -14,6 +15,13 @@ import model.RoomVO;
 public class RoomService {
 
     private final RoomDAO roomDAO;
+
+    public List<RoomResponse> getAllRooms() {
+        List<RoomVO> roomList = roomDAO.getAllRooms();
+        return roomList.stream()
+            .map(RoomResponse::from)
+            .toList();
+    }
 
     public RoomResponse createRoom(RoomRequest roomReq) {
         RoomVO roomVO = RoomVO.builder()

@@ -17,10 +17,13 @@ import java.net.URL;
 import org.json.JSONObject;
 
 import dto.MemberDTO;
+import dao.MemberDAO;
 
 @WebServlet("/profileservlet")
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private final MemberService memberService = new MemberService(new MemberDAO());
        
 
     public ProfileServlet() {
@@ -76,8 +79,7 @@ public class ProfileServlet extends HttpServlet {
 	   member.setMemberRole("user");
 	   
 	   // DB 처리
-       MemberService service = new MemberService();
-       MemberDTO loginUser = service.loginOrJoin(member);
+       MemberDTO loginUser = memberService.loginOrJoin(member);
 
        if (loginUser != null) {
            session.setAttribute("loginUser", loginUser);

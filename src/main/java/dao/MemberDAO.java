@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dto.MemberDTO;
+import model.MemberVO;
 import util.DatabaseUtil;
 
 public class MemberDAO {
@@ -53,6 +54,41 @@ public class MemberDAO {
             e.printStackTrace();
             System.out.println("Insert에서 오류 ");
         }
+    }
+
+    public MemberVO findByMemberId(String memberId) {
+        String selectSql = "SELECT * FROM member WHERE member_id = ?";
+        
+        return DatabaseUtil.executeQuery(selectSql, 
+            pstmt -> pstmt.setString(1, memberId),
+            rs -> {
+                if (rs.next()) {
+                    return MemberVO.builder()
+                    .memberId(rs.getString("member_id"))
+                    .nickname(rs.getString("nickname"))
+                    .imageUrl(rs.getString("image_url"))
+                    .playCnt(rs.getInt("play_cnt"))
+                    .winCnt(rs.getInt("win_cnt"))
+                    .memberLevel(rs.getInt("member_level"))
+                    .memberExp(rs.getInt("member_exp"))
+                    .build();
+                }
+                return null;
+            });
+    }
+
+    public void updateMemberResult(MemberVO memberVO) {
+        String updateSql = "UPDATE member SET play_cnt = ?, win_cnt = ?, member_level = ?, member_exp = ? WHERE member_id = ?";
+
+        DatabaseUtil.executeUpdate(updateSql, pstmt -> {
+            pstmt.setInt(1, memberVO.getPlayCnt());
+            pstmt.setInt(2, memberVO.getWinCnt());
+            pstmt.setInt(3, memberVO.getMemberLevel());
+            pstmt.setInt(4, memberVO.getMemberExp());
+            pstmt.setString(5, memberVO.getMemberId());
+            pstmt.executeUpdate();
+            return null;
+        });
     }
 }
 
