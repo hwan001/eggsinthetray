@@ -11,8 +11,7 @@ import dto.RoomRequest;
 import dto.RoomResponse;
 
 import java.io.IOException;
-import util.JsonResponseUtil;
-import util.JsonRequestUtil;
+import util.JsonUtil;
 
 @WebServlet("/api/rooms")
 public class RoomCreateServlet extends HttpServlet {
@@ -22,31 +21,15 @@ public class RoomCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("RoomCreateServlet doPost 호출");
+        System.out.println("RoomCreateServlet 호출");
         
-        RoomRequest roomReq = JsonRequestUtil.readRequest(request, response, RoomRequest.class);
-        if (roomReq == null) {
-            return;
-        }
+        RoomRequest roomReq = JsonUtil.readRequest(request, RoomRequest.class);
 
-        System.out.println("title: " + roomReq.getTitle());
-        System.out.println("isPublic: " + roomReq.getIsPublic());
-        System.out.println("password: " + roomReq.getPassword());
-
-        roomReq = RoomRequest.builder()
-            .title(roomReq.getTitle())
-            .isPublic(roomReq.getIsPublic())
-            .password(roomReq.getPassword())
-            .build();
+        System.out.println("roomReq: " + roomReq.getTitle());
+        System.out.println("roomReq: " + roomReq.getIsPublic());
+        System.out.println("roomReq: " + roomReq.getPassword());
 
         RoomResponse roomRes = roomService.createRoom(roomReq);
-
-        if (roomRes != null) {
-            JsonResponseUtil.writeSuccessResponse(response, roomRes, "방 생성에 성공했습니다.");
-            System.out.println("방 생성에 성공했습니다.");
-        } else {
-            JsonResponseUtil.writeErrorResponse(response, "방 생성에 실패했습니다.");
-            System.out.println("방 생성에 실패했습니다.");
-        }
+        JsonUtil.writeResponse(response, roomRes);
     }
 }
