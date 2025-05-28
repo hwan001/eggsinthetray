@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.RoomDAO;
 import model.RoomVO;
-import util.JsonResponseUtil;
+import util.JsonUtil;
 
 @WebServlet("/roomList")
 public class RoomListServlet extends HttpServlet {
@@ -20,9 +20,8 @@ public class RoomListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         System.out.println("RoomListServlet doGet 호출");
         List<RoomVO> roomList = roomDAO.getAllRooms();
-        JsonResponseUtil.writeSuccessResponse(response, roomList, "방 목록 조회에 성공했습니다.");
+        JsonUtil.writeResponse(response, roomList);
     }
 }

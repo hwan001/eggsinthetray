@@ -5,7 +5,7 @@ import java.util.UUID;
 import dao.RoomDAO;
 import dto.RoomRequest;
 import dto.RoomResponse;
-import dto.PasswordMatchResponse;
+import dto.SuccessResponse;
 import dto.PasswordRequest;
 import lombok.RequiredArgsConstructor;
 import model.RoomVO;
@@ -26,9 +26,14 @@ public class RoomService {
         return RoomResponse.from(roomDAO.selectRoomById(roomVO.getRoomId()));
     }
 
-    public PasswordMatchResponse checkPassword(String roomId, PasswordRequest passwordReq) {
+    public SuccessResponse checkPassword(String roomId, PasswordRequest passwordReq) {
         RoomVO roomVO = roomDAO.selectRoomById(roomId);
         boolean isMatch = roomVO.getPassword().equals(passwordReq.getPassword());
-        return PasswordMatchResponse.of(isMatch);
+        return SuccessResponse.of(isMatch);
+    }
+
+    public SuccessResponse deleteRoom(String roomId) {
+        roomDAO.deleteRoom(roomId);
+        return SuccessResponse.of(true);
     }
 }
