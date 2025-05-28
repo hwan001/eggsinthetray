@@ -10,3 +10,5 @@ web.xml
 .settings
 .metadata
 /bin/
+Dockerfile
+context.xml
