@@ -6,15 +6,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.RoomDAO;
+import dto.PasswordRequest;
+import dto.PasswordMatchResponse;
+import service.RoomService;
+import util.JsonUtil;
+
 import java.io.IOException;
 
-@WebServlet("/api/rooms/*/password")
+@WebServlet("/api/rooms/*")
 public class RoomPasswordServlet extends HttpServlet {
+
+    private final RoomService roomService = new RoomService(new RoomDAO());
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        System.out.println("RoomPasswordServlet 호출");
+        String roomId = request.getPathInfo().replace("/password", "").substring(1);
+        PasswordRequest passwordReq = JsonUtil.readRequest(request, PasswordRequest.class);
+        PasswordMatchResponse passwordMatchRes = roomService.checkPassword(roomId, passwordReq);
+        JsonUtil.writeResponse(response, passwordMatchRes);
     }
 
 }
