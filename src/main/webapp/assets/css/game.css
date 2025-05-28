@@ -1,159 +1,123 @@
-#section_chat {
-    margin: 0;
-    padding: 0;
-    font-family: "Galmuri11";
+/* 고정 배경 */
+
+#wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 1280px;
+  height: 832px;
+  transform: translate(-50%, -50%);
+  background-image: url("../images/mainBackground.png");
+  z-index: -1;
 }
 
-/* 배경 이미지 */
-.chat_bg_img {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 478px;
-    height: 318px;
-    transform: translate(-50%, -50%);
-    background-image: url("/eggsinthetray/assets/images/gameChattingBackground.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    border-radius: 0px;
-    z-index: -1;
-}
 
-/* 전체 채팅 영역 */
-.content_chat {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 420px;
-    height: 280px;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    box-sizing: border-box;
+/* 바둑판 */
+#boardWrapper {
+    position: relative; /* 반드시 있어야 absolute 자식 기준 됨 */
+
+    width: fit-content;
+    height: fit-content;
+
+    top: 10%;
+    left: 5%;
+
+    display: grid;
+
+    gap: 0;
     z-index: 1;
 }
 
-/* 시스템 메시지 스타일 */
-.chat_message.system {
-    font-size: 15px;
-    color: #c8c8c8;
-    text-align: center;
-    background: none;
-    padding: 0;
-    white-space: nowrap;
+
+/* 각 자리 판단 */
+.boardBlock {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-image: url("/eggsinthetray/assets/images/gameBoardDefaultBlock.png");
+  background-size: cover;
+  box-sizing: border-box;
+  cursor: pointer;
+  z-index: 1;
 }
 
-.chat_row.system {
-    display: flex;
-    justify-content: center;
-    margin: 6px 0;
+.stoneLayer {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 2;
 }
 
-/* 채팅 메세지 출력 (말풍선 리스트) */
-.chat_display {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1px 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+/* 돌 이미지 */
+.stoneLayer.black {
+  background-image: url("/eggsinthetray/assets/images/gameBlackEgg.png");
 }
 
-.chat_display::-webkit-scrollbar {
-    display: none;
+.stoneLayer.white {
+  background-image: url("/eggsinthetray/assets/images/gameWhiteEgg.png");
 }
 
-/* 채팅 메세지 행 */
-.chat_row {
-    display: flex;
-    align-items: center;
-    margin: 6px 0;
+/* hover 시만 hoverLayer 표시 */
+.boardBlock:not(.disabled):hover {
+  background-image: url("/eggsinthetray/assets/images/gameBoardSelectedBlock.png");
+  background-color: rgba(0, 255, 0, 0.2);
+  background-blend-mode: multiply;
 }
 
-/* 상대방 채팅 */
-.chat_row.left {
-    justify-content: flex-start;
-    padding-left: 8px;
+/* 금수 처리 (필요시 활성화) */
+.boardBlock.forbidden {
+  background-image: url("/eggsinthetray/assets/images/gameBoardForbiddenBlock.png");
+  opacity: 0.3;
 }
 
-/* 나의 채팅 */
-.chat_row.right {
-    justify-content: flex-end;
-    padding-right: 8px;
+/* 이미 둔 자리: 커서 없앰 */
+.boardBlock.disabled {
+  cursor: default;
 }
 
-/* 프로필 아이콘 */
-.profile_icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #ddd;
-    border: 2px solid #5b3e17;
-    margin: 0 6px;
+/* 병아리 머리 */
+.chickHead{
+    position: absolute;
+    width: 68px;
+    height: 60px;
+    background-image: url("/eggsinthetray/assets/images/gameChickHead.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
 }
 
-/* 채팅 메세지 말풍선 스타일 */
-.chat_message {
-    max-width: 55%;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 16px;
-    line-height: 16px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+
+/* 버트은 */
+.quit_btn {
+    position: fixed;
+
+    width: fit-content;
+    height: fit-content;
+
+    /* background-image: url("/eggsinthetray/assets/images/gameQuitButton.png"); */
+
+    top: 80%;
+    left: 52%;
+
+    z-index: 2;
 }
 
-.chat_message.left {
-    background-color: #f8d330;
-}
+.moveback_btn {
+    position: fixed;
 
-.chat_message.right {
-    background-color: #f9e9bd;
-}
+    width: fit-content;
+    height: fit-content;
 
-/* 채팅 입력창 박스 */
-.chat_input_box {
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    background-color: #fcebd5;
-    border-radius: 20px;
-    margin: 6px auto 0 auto;
-    height: 37px;
-    width: 349px;
-    box-sizing: border-box;
-}
+    top: 80%;
+    left: 72%;
 
-/* 입력창 (textarea) */
-.chat_input_box textarea {
-    flex: 1;
-    font-size: 16px;
-    padding: 0px 12px;
-    border: none;
-    background: transparent;
-    outline: none;
-    height: 100%;
-    resize: none;
-    overflow-y: hidden;
-    line-height: 1.4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Galmuri11";
-}
-
-/* 전송 버튼 */
-.send_btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0;
-    margin: 5px -10px 0 auto;
-}
-
-.send_btn img {
-    display: block;
+    z-index: 2;
 }

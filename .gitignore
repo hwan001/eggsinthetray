@@ -1,6 +1,11 @@
 /build/
 application.yaml
 target
+web.xml
 .classpath
 .project
-web.xml
+.idea
+.vscode
+.DS_Store
+.settings
+.metadata
