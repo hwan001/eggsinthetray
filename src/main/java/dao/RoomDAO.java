@@ -1,5 +1,9 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,44 +44,6 @@ public class RoomDAO {
             });
     }
 
-    public List<RoomVO> selectAllRoomsByTitle(String title) {
-        String selectSql = "SELECT room_id, title, is_public, password, created_at FROM Room WHERE title = ?";
-
-        return DatabaseUtil.executeQuery(selectSql,
-            pstmt -> pstmt.setString(1, title),
-            rs -> {
-                List<RoomVO> rooms = new ArrayList<>();
-                while (rs.next()) {
-                    rooms.add(RoomVO.builder()
-                        .roomId(rs.getString("room_id"))
-                        .title(rs.getString("title"))
-                        .isPublic(rs.getString("is_public"))
-                        .password(rs.getString("password"))
-                        .createdAt(rs.getString("created_at"))
-                        .build());
-                }
-                return rooms;
-            });
-    }
-
-    public List<RoomVO> selectAllRooms() {
-        String selectSql = "SELECT room_id, title, is_public, password, created_at FROM Room";
-
-        return DatabaseUtil.executeQuery(selectSql, rs -> {
-            List<RoomVO> rooms = new ArrayList<>();
-            while (rs.next()) {
-                rooms.add(RoomVO.builder()
-                    .roomId(rs.getString("room_id"))
-                    .title(rs.getString("title"))
-                    .isPublic(rs.getString("is_public"))
-                    .password(rs.getString("password"))
-                    .createdAt(rs.getString("created_at"))
-                    .build());
-            }
-            return rooms;
-        });
-    }
-
     public void deleteRoom(String roomId) {
         String deleteSql = "DELETE FROM Room WHERE room_id = ?";
 
@@ -86,5 +52,28 @@ public class RoomDAO {
             pstmt.executeUpdate();
             return null;
         });
+    }
+
+    public List<RoomVO> getAllRooms() {
+        String sql = "SELECT title, is_public, password FROM Room ORDER BY created_at DESC";
+        List<RoomVO> rooms = new ArrayList<>();
+
+        try (Connection conn = DatabaseUtil.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                RoomVO room = RoomVO.builder()
+                    .title(rs.getString("title"))
+                    .isPublic(rs.getString("is_public"))
+                    .password(rs.getString("password"))
+                    .build();
+                rooms.add(room);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("방 목록 조회 중 오류 발생");
+        }
+        return rooms;
     }
 }

@@ -1,3 +1,4 @@
+// 생성하기 버튼 클릭 시 모달
 document.addEventListener("DOMContentLoaded", () => {
   const createBtn = document.getElementById("createRoomBtn");
   const modalContainer = document.getElementById("createModal");
@@ -8,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const html = await res.text();
       modalContainer.innerHTML = html;
       modalContainer.style.display = "block";
-
       if (!document.getElementById("modalBackdrop")) {
         const backdrop = document.createElement("div");
         backdrop.id = "modalBackdrop";
@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("모달 로딩 실패:", error);
     }
   });
-
+  // 모달 닫기 이벤트 리스너
   document.addEventListener("click", (e) => {
     if (e.target.id === "modalBackdrop" || e.target.id === "createModal") {
       closeModal();
     }
   });
-
+  // 모달 닫기 함수
   function closeModal() {
     modalContainer.style.display = "none";
     modalContainer.innerHTML = "";
@@ -37,8 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
-// modal 기능 함수화 script -> main.js
+// 방 생성 모달 기능 함수화 script -> main.js
 function setupRoomModalEvents() {
   const publicRoom = document.getElementById('public_room');
   const privateRoom = document.getElementById('private_room');
@@ -113,12 +112,182 @@ function setupRoomModalEvents() {
   });
 }
 
-// Exp(추후 수정)
-// function setExp(percent) {
-//   const fill = document.querySelector('.exp-bar-fill');
-//   const label = document.querySelector('.exp-label');
-//   fill.style.width = percent + '%';
-//   label.textContent = `EXP: ${percent}%`;
-// }
+let allRooms = [];
 
+document.addEventListener("DOMContentLoaded", function() {
+  // 전체 방 목록 불러오기
+  fetch("/eggsinthetray/roomList")
+    .then(response => response.json())
+    .then(result => {
+      const roomList = result.data ? result.data : result;
+      allRooms = roomList;
+      renderRoomList(roomList);
+    });
+
+  // 검색 버튼 클릭 시 필터링
+  document.getElementById("searchBtn").addEventListener("click", () => {
+    const keyword = document.querySelector(".searchInput").value.trim().toLowerCase();
+    const filteredRooms = allRooms.filter(room =>
+      room.title && room.title.toLowerCase().includes(keyword)
+    );
+    renderRoomList(filteredRooms);
+  });
+
+  // Enter키로도 검색 가능하게
+  document.querySelector(".searchInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      document.getElementById("searchBtn").click();
+    }
+  });
+
+  // 방 생성 버튼
+  const createBtn = document.getElementById("createRoomBtn");
+  if (createBtn) {
+    createBtn.addEventListener("click", () => {
+      showModal("createModal", "/eggsinthetray/components/modal/RoomCreateModal.jsp", setupRoomModalEvents);
+    });
+  }
+});
+
+// 방 조회
+function renderRoomList(roomList) {
+  const container = document.getElementById("roomListContainer");
+  container.innerHTML = "";
+
+  if (!roomList || roomList.length === 0) {
+    container.innerHTML = "<div style='text-align: center; font-family: 'galmuri11'; font-size: 24px; font-weight: 700; color: #F66E89;'>방이 없습니다.</div>";
+    return;
+  }
+
+  roomList.forEach((room, idx) => {
+    const imgSrc = room.isPublic === "Y"
+      ? "./assets/images/mainUnlock.png"
+      : "./assets/images/mainLock.png";
+
+    const html = `
+      <div class="item">
+        <div class="item_roomState">
+          <img src="${imgSrc}">
+        </div>
+        <div class="item_title">${room.title}</div>
+        <button class="item_joinBtn" id="joinBtn${idx}" data-public="${room.isPublic}" data-room-id="${room.roomId}"></button>
+      </div>
+    `;
+    container.innerHTML += html;
+  });
+  attachJoinEvents();
+}
+
+// N이면 비번 모달, N아니면 바로 입장
+function attachJoinEvents() {
+  const joinButtons = document.querySelectorAll(".item_joinBtn");
+  joinButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const isPublic = btn.dataset.public;
+      const roomId = btn.dataset.roomId;
+
+      if (isPublic === 'N') {
+        showPasswordModal(roomId);
+      } else {
+        enterPublicRoom(roomId);
+      }
+    });
+  });
+}
+
+function enterPublicRoom(roomId) {
+  location.href = `/eggsinthetray/game?roomId=${roomId}`;
+}
+
+// 패스워드 로직(재웅님이 수정 예정)
+function showPasswordModal(roomId) {
+  showModal("passwordModal", "/eggsinthetray/components/modal/PasswordInputModal.jsp", () => {
+    const input = document.getElementById("password_input");
+    if (input) {
+      input.focus();
+      input.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value.length > 4) value = value.slice(0, 4);
+        e.target.value = value;
+      });
+    }
+  });
+}
+
+// 모달 배경(백드랍)적용
+function showModal(modalId, jspPath, onLoadCallback) {
+  const modalContainer = document.getElementById(modalId);
+
+  fetch(jspPath)
+    .then(res => res.text())
+    .then(html => {
+      modalContainer.innerHTML = html;
+      modalContainer.style.display = "flex";
+
+      if (!document.getElementById("modalBackdrop")) {
+        const backdrop = document.createElement("div");
+        backdrop.id = "modalBackdrop";
+        backdrop.className = "modal-backdrop";
+        document.body.appendChild(backdrop);
+      }
+
+      if (typeof onLoadCallback === "function") {
+        onLoadCallback();
+      }
+    })
+    .catch(err => {
+      console.error("모달 로딩 실패:", err);
+    });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "modalBackdrop" || e.target.id === modalId) {
+      closeModal(modalId);
+    }
+  });
+}
+// 모달 다른 곳 누르면 닫기
+function closeModal(modalId) {
+  const modalContainer = document.getElementById(modalId);
+  if (modalContainer) {
+    modalContainer.style.display = "none";
+    modalContainer.innerHTML = "";
+  }
+
+  const backdrop = document.getElementById("modalBackdrop");
+  if (backdrop) backdrop.remove();
+}
+
+// 방 생성 모달 기능 함수화 script -> main.js로 이사 옴
+function setupRoomModalEvents() {
+  const publicRoom = document.getElementById('public_room');
+  const privateRoom = document.getElementById('private_room');
+  const passwordInput = document.getElementById('item_room_password');
+
+  if (!publicRoom || !privateRoom || !passwordInput) return;
+
+  publicRoom.addEventListener('change', () => {
+    if (publicRoom.checked) {
+      passwordInput.disabled = true;
+      passwordInput.value = '';
+    }
+  });
+
+  privateRoom.addEventListener('change', () => {
+    if (privateRoom.checked) {
+      passwordInput.disabled = false;
+    }
+  });
+
+  passwordInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, '');
+    if (value.length > 4) value = value.slice(0, 4);
+    e.target.value = value;
+  });
+
+  if (publicRoom.checked) {
+    passwordInput.disabled = true;
+  } else {
+    passwordInput.disabled = false;
+  }
+}
 

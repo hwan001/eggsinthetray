@@ -6,8 +6,8 @@ pageEncoding="UTF-8"%>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./assets/css/main.css">
-    <script src="./assets/js/main.js"></script>
+    <link rel="stylesheet" href="/eggsinthetray/assets/css/main.css">
+    <script src="/eggsinthetray/assets/js/main.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
@@ -28,19 +28,7 @@ pageEncoding="UTF-8"%>
 
       <!-- 방 목록(추후 item 동적으로 추가) 더미 데이터 15개 이상 있어야 드래그바 예쁨-->
       <div class="section_room">
-        <div class="content">
-          <div class="item">
-            <div class="item_roomState"><img src="./assets/images/mainLock.png"></div>
-            <div class="item_title">여기는 방 이름</div>
-            <button class="item_joinBtn" id="joinBtn1"></button>
-          </div>
-
-          <div class="item">
-            <div class="item_roomState"><img src="./assets/images/mainUnlock.png"></div>
-            <div class="item_title">여기는 방 이름</div>
-            <button class="item_joinBtn" id="joinBtn2"></button>
-          </div>
-        </div>
+        <div class="content" id="roomListContainer"></div>
       </div>
 
       <button class=""></button>
@@ -75,9 +63,8 @@ pageEncoding="UTF-8"%>
 
     </div>
 
-    
     <div id="createModal" class="modal-container" style="display: none;"></div>
-
+    <div id="passwordModal" class="modal-container" style="display: none;"></div>
 
   </body>
 </html>
