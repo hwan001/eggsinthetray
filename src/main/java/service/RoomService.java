@@ -1,5 +1,7 @@
 package service;
 
+import java.util.UUID;
+
 import dao.RoomDAO;
 import dto.RoomRequest;
 import dto.RoomResponse;
@@ -14,7 +16,7 @@ public class RoomService {
 
     public RoomResponse createRoom(RoomRequest roomReq) {
         RoomVO roomVO = RoomVO.builder()
-            .roomId(roomReq.getRoomId())
+            .roomId(UUID.randomUUID().toString().substring(0, 10))
             .title(roomReq.getTitle())
             .isPublic(roomReq.getIsPublic())
             .password(roomReq.getPassword())

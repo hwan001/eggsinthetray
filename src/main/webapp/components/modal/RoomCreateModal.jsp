@@ -93,14 +93,14 @@
             appearance: none;
             width: 24px;
             height: 24px;
-            background-image: url('../../assets/images/roomTypeGray.png');
+            background-image: url('/eggsinthetray/assets/images/roomTypeGray.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             cursor: pointer;
         }
         .item_room_type:checked {
-            background-image: url('../../assets/images/roomTypeGreen.png');
+            background-image: url('/eggsinthetray/assets/images/roomTypeGreen.png');
         }
         .content_room_password {
             display: flex;
@@ -134,7 +134,7 @@
             cursor: not-allowed;
         }
         #room_create_button {
-            background-image: url('../../assets/images/roomCreateBtn.png');
+            background-image: url('/eggsinthetray/assets/images/roomCreateBtn.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
@@ -174,6 +174,7 @@
             <div id="content_room_title">
                 <input type="text" 
                         id="room_title_input"
+                        name="title"
                         placeholder="방 이름을 입력해주세요"
                         maxlength="20"
                         required>
@@ -182,8 +183,8 @@
                 <div class="room_type_radio_group">
                     <input type="radio" 
                             id="public_room" 
-                            name="roomType" 
-                            value="public" 
+                            name="isPublic" 
+                            value="Y" 
                             class="item_room_type"
                             checked>
                     <label for="public_room" class="room_type_label">공개방</label>
@@ -191,23 +192,25 @@
                 <div class="room_type_radio_group">
                     <input type="radio" 
                             id="private_room" 
-                            name="roomType" 
-                            value="private" 
+                            name="isPublic" 
+                            value="N" 
                             class="item_room_type">
                     <label for="private_room" class="room_type_label">비밀방</label>
                 </div>
             </div>
             <div class="content_room_password">
-                <label class="password_label">비밀번호</label>
-                <input type="password"
+                <label for="item_room_password" class="password_label">비밀번호</label>
+                <input type="password" 
                         id="item_room_password" 
-                        placeholder="****"
+                        name="password"
+                        placeholder="숫자 4자리"
                         maxlength="4"
-                        disabled>
+                        pattern="[0-9]{4}"
+                        inputmode="numeric"
+                        disabled
+                        >
             </div>
-            <button type="submit" id="room_create_button" form="room_create_form">
-                방 생성
-            </button>
+            <button type="submit" id="room_create_button">방 생성</button>
         </form>       
     </div>
     
