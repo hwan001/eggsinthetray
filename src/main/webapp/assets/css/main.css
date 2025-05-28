@@ -1,4 +1,4 @@
-@charset "EUC-KR";
+@charset "UTF-8";
 #wrapper {
   position: fixed;
   top: 50%;
@@ -265,8 +265,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  width: 177px;
-  height: 177px;
+  width: 150px;
+  height: 150px;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   font-family: 'galmuri11';
@@ -337,7 +337,7 @@
   z-index: 9998;
 }
 
-#createModal { 
+.modal-container { 
     border-radius: 20px;
     width: 611px;
     height: 358px;

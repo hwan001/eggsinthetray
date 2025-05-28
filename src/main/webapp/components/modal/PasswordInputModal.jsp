@@ -10,30 +10,24 @@
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
     <style>
-        #wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         #section_modal_container {
             background: #FFF4E8;
             border-radius: 20px;
             width: 611px;
             height: 267px;
             box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 2rem;
+            z-index: 9999;
         }
+
+
 
         #password_input_form {
             font-family: "Galmuri11";
@@ -104,22 +98,19 @@
     </style>
 </head>
 <body>
-    <div id="wrapper">
-        <div id="section_modal_container">
-            <form id="password_input_form">
-                <div id="content_password">
-                    <input type="password" 
-                            id="password_input"
-                            placeholder="방 비밀번호를 입력해주세요"
-                            maxlength="4"
-                            required>
-                </div>
-                <button type="submit" id="password_input_button" form="password_input_form">
-                    확인
-                </button>
-            </form>
-            
-        </div>
+    <div id="section_modal_container">
+        <form id="password_input_form">
+            <div id="content_password">
+                <input type="password" 
+                        id="password_input"
+                        placeholder="방 비밀번호를 입력해주세요"
+                        maxlength="4"
+                        required>
+            </div>
+            <button type="submit" id="password_input_button" form="password_input_form">
+                확인
+            </button>
+        </form>
     </div>
 
     <script>
