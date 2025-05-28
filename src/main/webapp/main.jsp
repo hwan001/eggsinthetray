@@ -78,7 +78,6 @@ pageEncoding="UTF-8"%>
     
     <div id="createModal" class="modal-container" style="display: none;"></div>
 
-    </div>
 
   </body>
 </html>

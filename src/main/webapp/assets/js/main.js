@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   createBtn.addEventListener("click", async () => {
     try {
-      const res = await fetch("../../components/modal/RoomCreateModal.html");
+      const res = await fetch("/eggsinthetray/components/modal/RoomCreateModal.jsp");
       const html = await res.text();
       modalContainer.innerHTML = html;
       modalContainer.style.display = "block";
@@ -43,8 +43,9 @@ function setupRoomModalEvents() {
   const publicRoom = document.getElementById('public_room');
   const privateRoom = document.getElementById('private_room');
   const passwordInput = document.getElementById('item_room_password');
+  const roomCreateForm = document.getElementById('room_create_form');
 
-  if (!publicRoom || !privateRoom || !passwordInput) return;
+  if (!publicRoom || !privateRoom || !passwordInput || !roomCreateForm) return;
 
   publicRoom.addEventListener('change', function () {
     if (this.checked) {
@@ -71,6 +72,45 @@ function setupRoomModalEvents() {
   } else if (privateRoom.checked) {
     passwordInput.disabled = false;
   }
+
+  // 방 생성 폼 제출 이벤트
+  roomCreateForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const title = document.getElementById('room_title_input').value;
+    const isPublic = document.querySelector('input[name="isPublic"]:checked').value;
+    const password = document.getElementById('item_room_password').value;
+
+    if (isPublic === 'N' && !password) {
+      alert('비밀방은 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/eggsinthetray/api/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          title: title,
+          isPublic: isPublic,
+          password: password
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        window.location.href = `/eggsinthetray/game.jsp?roomId=${result.roomId}`;
+      } else {
+        const error = await response.text();
+        alert('방 생성에 실패했습니다: ' + error);
+      }
+    } catch (error) {
+      console.error('방 생성 요청 실패:', error);
+      alert('방 생성 요청 중 오류가 발생했습니다.');
+    }
+  });
 }
 
 // Exp(추후 수정)
