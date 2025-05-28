@@ -25,6 +25,7 @@ public class LogoutServlet extends HttpServlet {
 
         // 세션에서 액세스 토큰 가져오기
         String accessToken = (String) request.getSession().getAttribute("accessToken");
+        System.out.println("LogoutServlet 액세스토큰:" + accessToken);
 
         if (accessToken != null) {
             // 카카오 로그아웃 요청
@@ -38,14 +39,16 @@ public class LogoutServlet extends HttpServlet {
             int responseCode = conn.getResponseCode();
             if (responseCode == 200) {
                 // 로그아웃 성공
+                System.out.println("로그아웃 성공");
                 request.getSession().invalidate(); // 세션 무효화
                 response.sendRedirect("login.jsp"); // 초기 화면 등으로 리디렉트
             } else {
                 // 실패 처리
-                response.getWriter().write("카카오 로그아웃 실패: " + responseCode);
+                System.out.println("로그아웃 실패");
             }
-        } else {
+        } else{
             response.sendRedirect("login.jsp");
+
         }
     }
 }

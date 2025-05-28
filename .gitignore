@@ -12,3 +12,4 @@ web.xml
 /bin/
 Dockerfile
 context.xml
+docker-compose.yml

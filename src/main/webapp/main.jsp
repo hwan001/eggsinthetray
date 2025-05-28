@@ -15,6 +15,10 @@ pageEncoding="UTF-8"%>
   </head>
   <body>
     <div id="wrapper">
+    <!--로그아웃 확인용 UI 적용 안된 버튼-->
+    <form action="${pageContext.request.contextPath}/logout" method="post">
+              <button type="submit">로그아웃</button>
+    </form>
       <!-- 검색(검색 시 특정 item만 나옴 & 옆에 리셋 버튼 누르면 방 목록 새로고침) -->
       <div class="search_container">
         <div class="section_search">
@@ -31,7 +35,8 @@ pageEncoding="UTF-8"%>
         <div class="content" id="roomListContainer"></div>
       </div>
 
-      <button class=""></button>
+
+
       <!-- 오른쪽(프로필 정보는 더미) -->
       <div class="section_right">
         <div class="content_profile">

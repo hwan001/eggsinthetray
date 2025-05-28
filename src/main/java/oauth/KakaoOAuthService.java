@@ -20,11 +20,12 @@ public class KakaoOAuthService extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String clientId = getServletContext().getInitParameter("kakao.client_id");
+		String redirectCallback = getServletContext().getInitParameter("kakao.redirect_uri_callback");
 		
 		String kakaoUrl = "https://kauth.kakao.com/oauth/authorize"
 				+ "?response_type=code"
 				+ "&client_id=" + clientId
-				+ "&redirect_uri=http://localhost:8090/eggsinthetray/kakaocallback";
+				+ "&redirect_uri=" + redirectCallback;
 		response.sendRedirect(kakaoUrl);//System.out.println(clientId);
 	}
 
