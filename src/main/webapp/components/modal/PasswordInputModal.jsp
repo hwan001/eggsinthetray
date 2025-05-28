@@ -10,6 +10,10 @@
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
     <style>
+        #wrapper {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
         #section_modal_container {
             background: #FFF4E8;
             border-radius: 20px;
@@ -26,8 +30,6 @@
             padding: 2rem;
             z-index: 9999;
         }
-
-
 
         #password_input_form {
             font-family: "Galmuri11";
@@ -67,7 +69,7 @@
         }
         
         #password_input_button {
-            background-image: url('../../assets/images/roomCreateBtn.png');
+            background-image: url('/eggsinthetray/assets/images/roomCreateBtn.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
@@ -93,35 +95,25 @@
         #password_input_button:active {
             transform: scale(0.95);
         }
-
-            
     </style>
 </head>
 <body>
-    <div id="section_modal_container">
-        <form id="password_input_form">
-            <div id="content_password">
-                <input type="password" 
-                        id="password_input"
-                        placeholder="방 비밀번호를 입력해주세요"
-                        maxlength="4"
-                        required>
-            </div>
-            <button type="submit" id="password_input_button" form="password_input_form">
-                확인
-            </button>
-        </form>
+    <div id="wrapper">
+        <div id="section_modal_container">
+            <form id="password_input_form">
+                <div id="content_password">
+                    <input type="password" 
+                            id="password_input"
+                            name="password"
+                            placeholder="방 비밀번호를 입력해주세요"
+                            maxlength="4"
+                            required>
+                </div>
+                <button type="submit" id="password_input_button" form="password_input_form">
+                    확인
+                </button>
+            </form>
+        </div>
     </div>
-
-    <script>
-        // 비밀번호 입력 제한 (숫자만 4자리)
-        document.getElementById('password_input').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^0-9]/g, '');
-            if (value.length > 4) {
-                value = value.slice(0, 4);
-            }
-            e.target.value = value;
-        });
-    </script>
 </body>
 </html>

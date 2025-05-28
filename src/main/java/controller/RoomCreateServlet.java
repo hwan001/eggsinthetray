@@ -22,13 +22,7 @@ public class RoomCreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("RoomCreateServlet 호출");
-        
         RoomRequest roomReq = JsonUtil.readRequest(request, RoomRequest.class);
-
-        System.out.println("roomReq: " + roomReq.getTitle());
-        System.out.println("roomReq: " + roomReq.getIsPublic());
-        System.out.println("roomReq: " + roomReq.getPassword());
-
         RoomResponse roomRes = roomService.createRoom(roomReq);
         JsonUtil.writeResponse(response, roomRes);
     }

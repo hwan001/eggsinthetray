@@ -37,79 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// 방 생성 모달 기능 함수화 script -> main.js
-function setupRoomModalEvents() {
-  const publicRoom = document.getElementById('public_room');
-  const privateRoom = document.getElementById('private_room');
-  const passwordInput = document.getElementById('item_room_password');
-  const roomCreateForm = document.getElementById('room_create_form');
-
-  if (!publicRoom || !privateRoom || !passwordInput || !roomCreateForm) return;
-
-  publicRoom.addEventListener('change', function () {
-    if (this.checked) {
-      passwordInput.disabled = true;
-      passwordInput.value = '';
-    }
-  });
-
-  privateRoom.addEventListener('change', function () {
-    if (this.checked) {
-      passwordInput.disabled = false;
-    }
-  });
-
-  passwordInput.addEventListener('input', function (e) {
-    let value = e.target.value.replace(/[^0-9]/g, '');
-    if (value.length > 4) value = value.slice(0, 4);
-    e.target.value = value;
-  });
-
-  // 초기 상태 설정
-  if (publicRoom.checked) {
-    passwordInput.disabled = true;
-  } else if (privateRoom.checked) {
-    passwordInput.disabled = false;
-  }
-
-  // 방 생성 폼 제출 이벤트
-  roomCreateForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const title = document.getElementById('room_title_input').value;
-    const isPublic = document.querySelector('input[name="isPublic"]:checked').value;
-    const password = document.getElementById('item_room_password').value;
-
-    if (isPublic === 'N' && !password) {
-      alert('비밀방은 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    try {
-      const response = await fetch('/eggsinthetray/api/rooms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify({
-          title: title,
-          isPublic: isPublic,
-          password: password
-        })
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        window.location.href = `/eggsinthetray/game.jsp?roomId=${result.roomId}`;
-      } else {
-        const error = await response.text();
-        alert('방 생성에 실패했습니다: ' + error);
-      }
-    } catch (error) {
-      console.error('방 생성 요청 실패:', error);
-      alert('방 생성 요청 중 오류가 발생했습니다.');
-    }
-  });
+// 방 입장 함수 (전역 스코프로 이동)
+function enterRoom(roomId) {
+  window.location.href = `/eggsinthetray/game.jsp?roomId=${roomId}`;
 }
 
 let allRooms = [];
@@ -189,26 +119,55 @@ function attachJoinEvents() {
       if (isPublic === 'N') {
         showPasswordModal(roomId);
       } else {
-        enterPublicRoom(roomId);
+        enterRoom(roomId);
       }
     });
   });
 }
 
-function enterPublicRoom(roomId) {
-  location.href = `/eggsinthetray/game?roomId=${roomId}`;
-}
-
-// 패스워드 로직(재웅님이 수정 예정)
+// 패스워드 로직
 function showPasswordModal(roomId) {
   showModal("passwordModal", "/eggsinthetray/components/modal/PasswordInputModal.jsp", () => {
     const input = document.getElementById("password_input");
+    const form = document.getElementById("password_input_form");
+    
     if (input) {
       input.focus();
       input.addEventListener("input", (e) => {
         let value = e.target.value.replace(/[^0-9]/g, '');
         if (value.length > 4) value = value.slice(0, 4);
         e.target.value = value;
+      });
+    }
+
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const password = input.value;
+        console.log(roomId);
+        console.log(password);
+
+        try {
+          const response = await fetch(`/eggsinthetray/api/rooms/${roomId}/password`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({ password })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            enterRoom(roomId);
+          } else {
+            alert('비밀번호가 일치하지 않습니다.');
+            input.value = '';
+          }
+        } catch (error) {
+          console.error('비밀번호 확인 중 오류:', error);
+          alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
+        }
       });
     }
   });
@@ -245,7 +204,7 @@ function showModal(modalId, jspPath, onLoadCallback) {
     }
   });
 }
-// 모달 다른 곳 누르면 닫기
+
 function closeModal(modalId) {
   const modalContainer = document.getElementById(modalId);
   if (modalContainer) {
@@ -257,37 +216,80 @@ function closeModal(modalId) {
   if (backdrop) backdrop.remove();
 }
 
-// 방 생성 모달 기능 함수화 script -> main.js로 이사 옴
+// 방 생성 모달 기능 함수화 script -> main.js
 function setupRoomModalEvents() {
   const publicRoom = document.getElementById('public_room');
   const privateRoom = document.getElementById('private_room');
   const passwordInput = document.getElementById('item_room_password');
+  const roomCreateForm = document.getElementById('room_create_form');
 
-  if (!publicRoom || !privateRoom || !passwordInput) return;
+  if (!publicRoom || !privateRoom || !passwordInput || !roomCreateForm) return;
 
-  publicRoom.addEventListener('change', () => {
-    if (publicRoom.checked) {
+  publicRoom.addEventListener('change', function () {
+    if (this.checked) {
       passwordInput.disabled = true;
       passwordInput.value = '';
     }
   });
 
-  privateRoom.addEventListener('change', () => {
-    if (privateRoom.checked) {
+  privateRoom.addEventListener('change', function () {
+    if (this.checked) {
       passwordInput.disabled = false;
     }
   });
 
-  passwordInput.addEventListener('input', (e) => {
+  passwordInput.addEventListener('input', function (e) {
     let value = e.target.value.replace(/[^0-9]/g, '');
     if (value.length > 4) value = value.slice(0, 4);
     e.target.value = value;
   });
 
+  // 초기 상태 설정
   if (publicRoom.checked) {
     passwordInput.disabled = true;
-  } else {
+  } else if (privateRoom.checked) {
     passwordInput.disabled = false;
   }
+
+  // 방 생성 폼 제출 이벤트
+  roomCreateForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const title = document.getElementById('room_title_input').value;
+    const isPublic = document.querySelector('input[name="isPublic"]:checked').value;
+    const password = document.getElementById('item_room_password').value;
+
+    if (isPublic === 'N' && !password) {
+      alert('비밀방은 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    console.log(title, isPublic, password);
+
+    try {
+      const response = await fetch('/eggsinthetray/api/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          title: title,
+          isPublic: isPublic,
+          password: password
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        enterRoom(result.roomId);
+      } else {
+        const error = await response.text();
+        alert('방 생성에 실패했습니다: ' + error);
+      }
+    } catch (error) {
+      console.error('방 생성 요청 실패:', error);
+      alert('방 생성 요청 중 오류가 발생했습니다.');
+    }
+  });
 }
 
