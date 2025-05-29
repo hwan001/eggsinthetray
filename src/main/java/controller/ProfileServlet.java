@@ -81,7 +81,8 @@ public class ProfileServlet extends HttpServlet {
 
        if (loginUser != null) {
            session.setAttribute("loginUser", loginUser);
-           System.out.println("profileServer에 user존재 "+session.getAttribute("loginUser"));
+           session.setAttribute("memberId", loginUser.getMemberId());
+		   System.out.println("profileServer에 user존재 "+session.getAttribute("loginUser"));
            response.sendRedirect("main.jsp");
        } else {
            response.sendRedirect("login.jsp");
