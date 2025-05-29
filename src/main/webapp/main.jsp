@@ -7,6 +7,10 @@ pageEncoding="UTF-8"%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="/eggsinthetray/assets/css/main.css">
+    <% String memberId = (String) session.getAttribute("memberId"); %>
+    <script>
+        var memberId = "<%= memberId %>";
+    </script>
     <script src="/eggsinthetray/assets/js/main.js"></script>
     <link
       rel="stylesheet"
@@ -35,21 +39,17 @@ pageEncoding="UTF-8"%>
         <div class="content" id="roomListContainer"></div>
       </div>
 
-
-
+      <button class="logoutBtn" id="logoutBtn"></button>
       <!-- 오른쪽(프로필 정보는 더미) -->
       <div class="section_right">
         <div class="content_profile">
           <div class="item" id="item_profile"></div>
           <div class="item" id="item_memberInfo">
-            <div class="item" id="item_nickname">이름 : AVGMAX</div>
-            <div class="item" id="item_exp">
-              <!--경험치 바(추후 애니메이션 추가)-->
-              <div class="exp-bar-fill" style="width:70%;"></div>
-            </div>
-            <div class="item" id="item_play">경기 수 : 20</div>
-            <div class="item" id="item_win">승 수 : 10</div>
-            <div class="item" id="item_winRate">승률 : 50%</div>
+            <div class="item" id="item_nickname">이름 : </div>
+            <div class="item" id="exp"></div>
+            <div class="item" id="item_play">경기 수 : </div>
+            <div class="item" id="item_win">승 수 : </div>
+            <div class="item" id="item_winRate">승률 : </div>
           </div>
         </div>
         <div class="content_piyo">
@@ -70,6 +70,7 @@ pageEncoding="UTF-8"%>
 
     <div id="createModal" class="modal-container" style="display: none;"></div>
     <div id="passwordModal" class="modal-container" style="display: none;"></div>
+    </div>
 
   </body>
 </html>
