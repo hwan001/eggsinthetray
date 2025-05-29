@@ -2,6 +2,7 @@ package service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import dao.RoomDAO;
 import dto.RoomRequest;
@@ -20,7 +21,7 @@ public class RoomService {
         List<RoomVO> roomList = roomDAO.getAllRooms();
         return roomList.stream()
             .map(RoomResponse::from)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public RoomResponse getRoomById(String roomId) {

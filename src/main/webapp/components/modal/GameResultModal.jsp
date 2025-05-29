@@ -9,6 +9,8 @@
     
     String title = gameResult.equals("win") ? "이겼닭" : "졌닭";
     String imagePath = gameResult.equals("win") ? "../../assets/images/resultWin.GIF" : "../../assets/images/resultLose.GIF";
+
+    String soundPath = gameResult.equals("win") ? "../../assets/sound/win.mp3" : "../../assets/sound/lose.mp3";
 %>
 <!DOCTYPE html>
 <html>
@@ -19,8 +21,8 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
-     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
-     <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
+    <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
+    <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
     <style>
         #wrapper {
             position: fixed;
@@ -107,6 +109,9 @@
         src="${pageContext.request.contextPath}/assets/sound/click_effect.mp3"
         preload="auto"
       ></audio>
+
+       <embed src="../../assets/sound/win.mp3" autostart="true" loop="infinite" width="0" height="0"></embed>
+ <!-- audio  -->
     <div id="wrapper">
         <div id="section_modal_container">
             <div id="content_modal_title"><%= title %></div>
@@ -120,9 +125,36 @@
     </div>
     
     <script>
+        //jsp상단에서 soundPath 찾기
+        const resultSoundPath = "<%= soundPath %>";
+
         function goToMain() {
             window.location.href = '../../main.jsp';
         }
+
+         //bgm 우회 마이크 허용해서 사용자와 인터렉션 있다고 하게 만들기
+         window.onload = function () {
+           const bgSound = new Audio(resultSoundPath);
+           navigator.mediaDevices
+             .getUserMedia({ audio: true })
+             .then(() => {
+               let AudioContext = window.AudioContext;
+               let audioContext = new AudioContext();
+               playSound(bgSound);
+             })
+             .catch((e) => {
+               console.error(`Audio permissions denied: ${e}`);
+             });
+         };
+
+
+         function playSound(sound) {
+           const bgsong = sound.play();
+           sound.loop = true;
+           if (bgsong !== undefined) {
+             bgsong;
+           }
+         }
     </script>
 </body>
 </html> 
