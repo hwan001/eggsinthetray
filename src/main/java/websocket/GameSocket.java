@@ -19,8 +19,7 @@ import java.util.concurrent.TimeUnit;
 @ServerEndpoint("/game/{roomId}")
 public class GameSocket {
     private static Map<String, Set<Session>> roomSessions = new ConcurrentHashMap<>(); // 방별로 세션을 Set으로 관리
-    private static Map<String, List<Session>> roomSessionsOrder = new ConcurrentHashMap<>(); // 방 별로 세션 접속을 List로 관리 (접속
-                                                                                             // 순서)
+    private static Map<String, List<Session>> roomSessionsOrder = new ConcurrentHashMap<>(); // 방 별로 세션 접속을 List로 관리 (접속 순서)
     private static Map<Session, String> sessionUserMap = new ConcurrentHashMap<>(); // 세션별로 유저이름을 맵핑
     private static Map<String, Stack<Move>> boardStackMap = new ConcurrentHashMap<>(); // 방별로 게임 진행 상황을 스택으로 관리함
     private static Map<String, String> roomTurnMap = new ConcurrentHashMap<>(); // 방별로 턴을 관리함
