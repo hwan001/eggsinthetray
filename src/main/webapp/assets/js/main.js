@@ -1,7 +1,3 @@
-console.log('main.js loaded');
-
-// 함수 정의는 바깥에 두고, 초기화 코드는 하나의 DOMContentLoaded 핸들러에만 넣음
-
 function setupRoomModalEvents() {
   const publicRoom = document.getElementById('public_room');
   const privateRoom = document.getElementById('private_room');

@@ -9,6 +9,8 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
+     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
+        <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
     <style>
         #section_modal_container {
             background: #FFF4E8;
@@ -162,6 +164,12 @@
     
 </head>
 <body>
+ <!-- audio  -->
+      <audio
+        id="click_sound"
+        src="${pageContext.request.contextPath}/assets/sound/click_effect.mp3"
+        preload="auto"
+      ></audio>
     <div id="section_modal_container">
         <div class="header_background">
             <div class="header">
@@ -210,7 +218,7 @@
                         disabled
                         >
             </div>
-            <button type="submit" id="room_create_button">방 생성</button>
+            <button type="submit" id="room_create_button" class ="clickEffect">방 생성</button>
         </form>       
     </div>
     
