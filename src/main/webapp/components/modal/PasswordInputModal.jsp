@@ -9,6 +9,8 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
+     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
+     <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
     <style>
         #wrapper {
             background-color: rgba(0, 0, 0, 0.5);
@@ -98,6 +100,12 @@
     </style>
 </head>
 <body>
+ <!-- audio  -->
+      <audio
+        id="click_sound"
+        src="${pageContext.request.contextPath}/assets/sound/click_effect.mp3"
+        preload="auto"
+      ></audio>
     <div id="wrapper">
         <div id="section_modal_container">
             <form id="password_input_form">
@@ -109,7 +117,7 @@
                             maxlength="4"
                             required>
                 </div>
-                <button type="submit" id="password_input_button" form="password_input_form">
+                <button type="submit" id="password_input_button" class="clickEffect" form="password_input_form">
                     확인
                 </button>
             </form>

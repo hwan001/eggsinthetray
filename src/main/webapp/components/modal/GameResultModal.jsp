@@ -8,7 +8,7 @@
     }
     
     String title = gameResult.equals("win") ? "이겼닭" : "졌닭";
-    String imagePath = gameResult.equals("win") ? "../../assets/images/resultWin.png" : "../../assets/images/resultLose.png";
+    String imagePath = gameResult.equals("win") ? "../../assets/images/resultWin.GIF" : "../../assets/images/resultLose.GIF";
 %>
 <!DOCTYPE html>
 <html>
@@ -19,6 +19,8 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
     />
+     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
+     <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
     <style>
         #wrapper {
             position: fixed;
@@ -99,6 +101,12 @@
     </style>
 </head>
 <body>
+ <!-- audio  -->
+      <audio
+        id="click_sound"
+        src="${pageContext.request.contextPath}/assets/sound/click_effect.mp3"
+        preload="auto"
+      ></audio>
     <div id="wrapper">
         <div id="section_modal_container">
             <div id="content_modal_title"><%= title %></div>
@@ -107,7 +115,7 @@
             </div>
         </div>
         <div id="to_main_button">
-            <button onclick="goToMain()">메인으로</button>
+            <button class = "clickEffect" onclick="goToMain()">메인으로</button>
         </div>
     </div>
     
