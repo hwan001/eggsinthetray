@@ -91,20 +91,37 @@
                 </div>
 
                 <!-- 채팅 UI -->
-                <!-- <div id="section_chatting">  -->
-                <div id="section_chat">
-                    <!-- <div class="chat_bg_img"></div> -->
+                <!-- <div id="section_chat">
                     <div class="content_chat">
                         <div class="chat_display" id="chat_display_el"></div>
+                    </div>
+                    <div class="chat_input_box">
+                        <textarea placeholder="메시지를 입력하세요..." id="chat_input"></textarea>
+                        <button class="send_btn">
+                            <img src="/eggsinthetray/assets/images/gameSendIcon.png" alt="전송">
+                        </button>
+                    </div>
+                </div> -->
+                <!-- </div> -->
+
+                 <!-- 채팅 UI -->
+                <div id="section_chat">
+                    <!-- 배경 이미지  -->
+                    <div class="chat_bg_img"></div>
+                    <!-- 채팅 인터페이스 전체 -->
+                    <div class="content_chat">
+                        <!-- 채팅 메시지 표시 영역 -->
+                        <div class="chat_display" id="chat_display_el"></div>
+                        <!-- 채팅 입력창과 전송 버튼 -->
                         <div class="chat_input_box">
-                            <textarea placeholder="메시지를 입력하세요..." id="chat_input"></textarea>
+                            <textarea id="chat_input" placeholder="메시지를 입력하세요..."></textarea>
                             <button class="send_btn">
-                                <img src="/eggsinthetray/assets/images/gameSendIcon.png" alt="전송">
+                                <img src="${pageContext.request.contextPath}/assets/images/gameSendIcon.png" alt="채팅 전송 버튼">
                             </button>
                         </div>
                     </div>
                 </div>
-                <!-- </div> -->
+
 
                 <!-- 버튼 -->
                  <div id="section_button"> 
