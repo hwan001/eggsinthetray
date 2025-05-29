@@ -8,7 +8,7 @@ import lombok.Builder;
 @Builder
 public class MemberResponse {
     private String memberId;
-    private String nickName;
+    private String nickname;
     private String imageUrl;
     private int playCnt;
     private int winCnt;
@@ -19,7 +19,7 @@ public class MemberResponse {
     public static MemberResponse from(MemberVO memberVO) {
         return MemberResponse.builder()
             .memberId(memberVO.getMemberId())
-            .nickName(memberVO.getNickname())
+            .nickname(memberVO.getNickname())
             .imageUrl(memberVO.getImageUrl())
             .playCnt(memberVO.getPlayCnt())
             .winCnt(memberVO.getWinCnt())

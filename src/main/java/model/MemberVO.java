@@ -9,6 +9,7 @@ public class MemberVO {
     private String memberId;
     private String nickname;
     private String imageUrl;
+    private String memberRole;
     private int playCnt;
     private int winCnt;
     private double winRate; 

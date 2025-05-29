@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
   // 전체 방 목록 불러오기
-  fetch("/eggsinthetray/roomList")
+  fetch("/eggsinthetray/api/rooms")
     .then(response => response.json())
     .then(result => {
       const roomList = result.data ? result.data : result;
@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const refreshBtn = document.getElementById("refreshBtn");
   if (refreshBtn) {
     refreshBtn.addEventListener("click", () => {
-      fetch("/eggsinthetray/roomList")
+      fetch("/eggsinthetray/api/rooms")
         .then(response => response.json())
         .then(result => {
           const roomList = result.data ? result.data : result;
@@ -268,15 +268,15 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log('API 응답:', data);
       document.getElementById('item_profile').innerHTML = `
         <img 
-          src="${data.profileImage}" 
+          src="${data.imageUrl}" 
           style="width:150px; height:150px; border-radius:25px; object-fit:cover;"
         >
       `;
       document.getElementById('item_nickname').textContent = `이름 : ${data.nickname}`;
-      document.getElementById('item_play').textContent = `경기 수 : ${data.playCount}`;
-      document.getElementById('item_win').textContent = `승 수 : ${data.winCount}`;
-      document.getElementById('item_winRate').textContent = `승률 : ${data.winRate}%`;
-
+      document.getElementById('item_play').textContent = `경기 수 : ${data.playCnt}`;
+      document.getElementById('item_win').textContent = `승 수 : ${data.winCnt}`;
+      const winRate = data.playCnt > 0 ? Math.round((data.winCnt / data.playCnt) * 100) : 0;
+      document.getElementById('item_winRate').textContent = `승률 : ${winRate}%`;
     })
     .catch(error => {
       console.error('에러 발생:', error);

@@ -1,7 +1,7 @@
 package service;
 
 import dao.MemberDAO;
-import dto.MemberDTO;
+import dto.MemberRequest;
 import dto.MemberResponse;
 import dto.ResultRequest;
 import lombok.RequiredArgsConstructor;
@@ -9,20 +9,28 @@ import model.MemberVO;
 
 @RequiredArgsConstructor
 public class MemberService {
+
 	private final MemberDAO memberDAO;
 
-    public MemberDTO loginOrJoin(MemberDTO member) {
-    	//찾아서 있으면 객체 반
-        MemberDTO existing = memberDAO.findById(member.getMemberId());
-        if (existing != null) {
-            return existing; 
-        } else {//없으면 새로 insert
-            memberDAO.insertMember(member);
-            return member;
+    public MemberResponse loginOrJoin(MemberRequest memberReq) {
+        MemberVO memberVO = memberDAO.findByMemberId(memberReq.getMemberId());
+        if (memberVO != null) {
+            return MemberResponse.from(memberVO);
         }
+        memberVO = MemberVO.builder()
+            .memberId(memberReq.getMemberId())
+            .nickname(memberReq.getNickname())
+            .imageUrl(memberReq.getImageUrl())
+            .memberRole("USER")
+            .playCnt(0)
+            .winCnt(0)
+            .memberLevel(1)
+            .build();
+        memberDAO.insertMember(memberVO);
+        return MemberResponse.from(memberVO);
     }
 
-    public MemberResponse getMember(String memberId) {
+    public MemberResponse getMemberById(String memberId) {
         MemberVO memberVO = memberDAO.findByMemberId(memberId);
         return MemberResponse.from(memberVO);
     }

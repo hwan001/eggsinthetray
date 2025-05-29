@@ -2,7 +2,6 @@ package dto;
 
 import lombok.Getter;
 import lombok.Builder;
-import util.JsonUtil;
 
 @Getter
 @Builder
@@ -11,8 +10,7 @@ public class MemberRequest {
     private String nickname;
     private String imageUrl;
 
-    public static MemberRequest from(String jsonResponse) {
-        KakaoResponse kakaoResponse = JsonUtil.fromJson(jsonResponse, KakaoResponse.class);
+    public static MemberRequest from(KakaoResponse kakaoResponse) {
         return MemberRequest.builder()
             .memberId(String.valueOf(kakaoResponse.getId()))
             .nickname(kakaoResponse.getKakao_account().getProfile().getNickname())
