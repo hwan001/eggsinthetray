@@ -165,6 +165,10 @@ function renderMap(mapData) {
     container.append(...tiles);
 }
 
+
+document.querySelector(".content_room_title").textContent = "[비공개] 방이름 알려줘";
+
+
 document.querySelector(".quit_btn").addEventListener("click", gameQuit);
 document.querySelector(".moveback_btn").addEventListener("click", gameMoveBack);
 
