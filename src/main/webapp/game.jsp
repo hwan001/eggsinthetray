@@ -37,8 +37,8 @@
                 <div id="section_game">
                     <!-- 게임 UI -->
                     <div class="chick_head_wrapper">
-                        <div class="chickHead" style="top: 4%; left: 5%;"></div>
-                        <div class="chickHead" style="top: 4%; right: 47%;"></div>
+                        <div class="chickHead" style="top: 4%; left: 5%;margin-left: 50px;"></div>
+                        <div class="chickHead" style="top: 4%; right: 47%;margin-right: 50px;"></div>
                     </div>
                     <div id="boardWrapper"></div>
                 </div>
@@ -97,7 +97,7 @@
                     <div class="content_chat">
                         <div class="chat_display" id="chat_display_el"></div>
                         <div class="chat_input_box">
-                            <textarea placeholder="메시지를 입력하세요..."></textarea>
+                            <textarea placeholder="메시지를 입력하세요..." id="chat_input"></textarea>
                             <button class="send_btn">
                                 <img src="/eggsinthetray/assets/images/gameSendIcon.png" alt="전송">
                             </button>

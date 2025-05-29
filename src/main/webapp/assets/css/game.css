@@ -1,11 +1,9 @@
 /* ===============================
     기본 배경 및 전체 레이아웃
 ================================ */
-#wrapper {
+/* #wrapper {
     display: flex;
     flex-direction: row;
-
-    /* justify-content: space-between; */
 
     width: 1280px;
     height: 832px;
@@ -13,6 +11,21 @@
     background-image: url("/eggsinthetray/assets/images/mainBackground.png");
     background-size: cover;
     
+    z-index: -1;
+} */
+
+#wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    top: 50%;
+    left: 50%;
+    width: 1280px;
+    height: 832px;
+    transform: translate(-50%, -50%);
+    background-image: url("/eggsinthetray/assets/images/mainBackground.png");
+    background-size: contain;
+    background-repeat: no-repeat;
     z-index: -1;
 }
 
@@ -30,6 +43,12 @@
     flex-direction: column;
     padding: 20px;
     box-sizing: border-box;
+    transform: scale(0.85); 
+    transform-origin: top left; 
+    height: 1024px;
+
+    position: relative;
+    left: -50px;
 }
 
 #section_game{
@@ -41,11 +60,13 @@
 }
 
 #section_room_title{
-    flex: 1;
+    /* flex: 1; */
+    margin-bottom: 20px;
+    margin-left: 12px;
 }
 
 #section_profile {
-    flex: 3;
+    flex: 2;
 }
 
 #section_button {
@@ -62,7 +83,7 @@
 
 
 #boardWrapper {
-    position: relative;
+    /* position: relative; */
     display: grid;
     gap: 0;
     top: 10%;
@@ -125,6 +146,7 @@
 .chick_head_wrapper {
     display: flex;
     justify-content: space-between;
+
 }
 
 .chickHead {
