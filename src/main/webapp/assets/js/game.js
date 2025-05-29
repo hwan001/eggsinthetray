@@ -18,7 +18,7 @@ function getUserIdFromURL() {
 }
 
 function connectGameWebSocket(roomId, userId) {
-    gameWebSocket = new WebSocket("ws://" + location.host + "/eggsinthetray/game/" + roomId + "?userId=" + userId);
+    gameWebSocket = new WebSocket("wss://" + location.host + "/eggsinthetray/game/" + roomId + "?userId=" + userId);
     gameWebSocket.onopen = () => {
         const startMessage = {
             type: "start"
@@ -39,8 +39,12 @@ function handleGameMessage(event) {
         const result = data.result || "lose";
         showQuitModal(result);
         disableGameUI();
+        updateResult(userId, result);
+        deleteRoom(roomId);
     } else if (data.type === "board") {
         renderMap(data.map);
+        console.log(data.turn); // 현재 턴을 서버가 뿌려줌
+        
     }
 }
 
@@ -48,6 +52,27 @@ function handleGameMessage(event) {
 /* function */
 function showQuitModal(result) {
     window.location.href = `/eggsinthetray/components/modal/GameResultModal.jsp?result=${result}`;
+}
+
+function updateResult(userId, result) {
+    fetch(`/eggsinthetray/api/members/${userId}/result`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            result: result
+        })
+    });
+}
+
+function deleteRoom(roomId) {
+    fetch(`/eggsinthetray/api/rooms/${roomId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
 }
 
 function sendBoardClick(x, y) {

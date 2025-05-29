@@ -39,10 +39,12 @@ public class GameSocket {
         scheduler.scheduleAtFixedRate(() -> {
             for (String roomId : roomSessions.keySet()) {
                 int[][] board = getCurrentBoard(roomId);
+                String currentTurn = roomTurnMap.get(roomId);
 
                 JSONObject msg = new JSONObject();
                 msg.put("type", "board");
                 msg.put("map", boardToJsonArray(board));
+                msg.put("turn", currentTurn);
 
                 broadcast(roomId, msg.toString());
             }

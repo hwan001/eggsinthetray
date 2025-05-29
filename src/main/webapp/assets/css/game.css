@@ -7,7 +7,7 @@
   width: 1280px;
   height: 832px;
   transform: translate(-50%, -50%);
-  background-image: url("../images/mainBackground.png");
+  background-image: url("/eggsinthetray/assets/images/mainBackground.png");
   z-index: -1;
 }
 
@@ -101,8 +101,6 @@
 
     width: fit-content;
     height: fit-content;
-
-    /* background-image: url("/eggsinthetray/assets/images/gameQuitButton.png"); */
 
     top: 80%;
     left: 52%;
