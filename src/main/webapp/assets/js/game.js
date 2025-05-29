@@ -1,5 +1,6 @@
 let gameWebSocket;
 let myColor = null;
+let serverTurn = null;
 
 function gameInit() {
     const roomId = getRoomIdFromURL();
@@ -43,8 +44,9 @@ function handleGameMessage(event) {
         deleteRoom(roomId);
     } else if (data.type === "board") {
         renderMap(data.map);
-        console.log(data.turn); // 현재 턴을 서버가 뿌려줌
-
+        console.log("serverTurn : " + serverTurn);
+        serverTurn = data.turn
+        
     }
 }
 

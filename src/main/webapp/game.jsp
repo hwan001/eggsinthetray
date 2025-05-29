@@ -10,6 +10,9 @@
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/game.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css">
+        <!-- 애니 -->
+        <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
+        <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
 
         <script src="${pageContext.request.contextPath}/assets/js/game.js" defer></script>
         <script src="${pageContext.request.contextPath}/assets/js/chat.js"></script>
@@ -21,6 +24,14 @@
     </head>
 
     <body>
+        <!-- 오디오추가 -->
+        <audio
+                id="click_sound"
+                src="${pageContext.request.contextPath}/assets/sound/click_effect.mp3"
+                preload="auto">
+        </audio>
+
+
         <!-- 배경 UI -->
         <div id="wrapper">
             <!-- 게임 UI -->
@@ -96,12 +107,12 @@
             </div>
 
             <!-- 무르기 버튼 -->
-            <button class="moveback_btn">
+            <button class="moveback_btn clickEffect">
                 <img src="${pageContext.request.contextPath}/assets/images/gameMoveBackButton.png" alt="무르기 버튼">
             </button>
 
             <!-- 기권하기 버튼 -->
-            <button class="quit_btn">
+            <button class="quit_btn clickEffect">
                 <img src="${pageContext.request.contextPath}/assets/images/gameQuitButton.png" alt="기권하기 버튼">
             </button>
         </div>
