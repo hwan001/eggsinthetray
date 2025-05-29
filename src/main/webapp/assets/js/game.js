@@ -44,7 +44,7 @@ function handleGameMessage(event) {
     } else if (data.type === "board") {
         renderMap(data.map);
         console.log(data.turn); // 현재 턴을 서버가 뿌려줌
-        
+
     }
 }
 
@@ -76,15 +76,15 @@ function deleteRoom(roomId) {
 }
 
 function sendBoardClick(x, y) {
-  const moveMessage = {
-    type: "move",
-    x: x,
-    y: y
-  };
+    const moveMessage = {
+        type: "move",
+        x: x,
+        y: y
+    };
 
-  if (gameWebSocket && gameWebSocket.readyState === WebSocket.OPEN) {
-    gameWebSocket.send(JSON.stringify(moveMessage));
-  }
+    if (gameWebSocket && gameWebSocket.readyState === WebSocket.OPEN) {
+        gameWebSocket.send(JSON.stringify(moveMessage));
+    }
 }
 
 function disableGameUI() {
@@ -117,54 +117,53 @@ function gameMoveBack() {
 }
 
 function renderMap(mapData) {
-  const container = document.getElementById('boardWrapper');
-  container.innerHTML = '';
+    const container = document.getElementById('boardWrapper');
+    container.innerHTML = '';
 
-  const rows = mapData.length;
-  const cols = mapData[0].length;
+    const rows = mapData.length;
+    const cols = mapData[0].length;
 
-  container.style.display = 'grid';
-  container.style.gridTemplateColumns = `repeat(${cols}, 40px)`;
-  container.style.gridTemplateRows = `repeat(${rows}, 40px)`;
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = `repeat(${cols}, 40px)`;
+    container.style.gridTemplateRows = `repeat(${rows}, 40px)`;
 
-  const tiles = [];
+    const tiles = [];
 
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const cell = mapData[y][x];
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const cell = mapData[y][x];
 
-      const block = document.createElement('div');
-      block.classList.add('boardBlock');
+            const block = document.createElement('div');
+            block.classList.add('boardBlock');
 
-      block.dataset.x = x;
-      block.dataset.y = y;
+            block.dataset.x = x;
+            block.dataset.y = y;
 
-      const stoneLayer = document.createElement('div');
-      stoneLayer.classList.add('stoneLayer');
+            const stoneLayer = document.createElement('div');
+            stoneLayer.classList.add('stoneLayer');
 
-      if (cell === 1) {
-        stoneLayer.classList.add('black');
-        stoneLayer.classList.add('disabled');
-      } else if (cell === 2) {
-        stoneLayer.classList.add('white');
-        stoneLayer.classList.add('disabled');
-      }
+            if (cell === 1) {
+                stoneLayer.classList.add('black');
+                stoneLayer.classList.add('disabled');
+            } else if (cell === 2) {
+                stoneLayer.classList.add('white');
+                stoneLayer.classList.add('disabled');
+            }
 
-      block.appendChild(stoneLayer);
+            block.appendChild(stoneLayer);
 
-      if (cell === 0) {
-        block.addEventListener('click', () => sendBoardClick(x, y));
-      }
+            if (cell === 0) {
+                block.addEventListener('click', () => sendBoardClick(x, y));
+            }
 
-      tiles.push(block);
+            tiles.push(block);
+        }
     }
-  }
 
-  container.append(...tiles);
+    container.append(...tiles);
 }
 
 document.querySelector(".quit_btn").addEventListener("click", gameQuit);
 document.querySelector(".moveback_btn").addEventListener("click", gameMoveBack);
 
 window.addEventListener("load", gameInit);
-
