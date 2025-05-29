@@ -41,6 +41,7 @@ public class MemberDAO {
                     .memberId(rs.getString("member_id"))
                     .nickname(rs.getString("nickname"))
                     .imageUrl(rs.getString("image_url"))
+                    .memberRole(rs.getString("member_role"))
                     .playCnt(rs.getInt("play_cnt"))
                     .winCnt(rs.getInt("win_cnt"))
                     .memberLevel(rs.getInt("member_level"))

@@ -25,6 +25,7 @@ public class MemberService {
             .playCnt(0)
             .winCnt(0)
             .memberLevel(1)
+            .memberExp(0)
             .build();
         memberDAO.insertMember(memberVO);
         return MemberResponse.from(memberVO);
