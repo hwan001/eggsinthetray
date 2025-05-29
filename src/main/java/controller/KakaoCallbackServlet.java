@@ -38,9 +38,11 @@ public class KakaoCallbackServlet extends HttpServlet {
 
 	    // body 파라미터 만들기
 	    String clientId = getServletContext().getInitParameter("kakao.client_id");
+		String redirectCallback = getServletContext().getInitParameter("kakao.redirect_uri_callback");
+
 	    String body = "grant_type=authorization_code"
 	                + "&client_id=" + clientId
-	                + "&redirect_uri=http://localhost:8090/eggsinthetray/kakaocallback"
+	                + "&redirect_uri=" + redirectCallback
 	                + "&code=" + code;
 	    
 	    OutputStream os = conn.getOutputStream();

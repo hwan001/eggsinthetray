@@ -10,3 +10,6 @@ web.xml
 .settings
 .metadata
 /bin/
+Dockerfile
+context.xml
+docker-compose.yml
