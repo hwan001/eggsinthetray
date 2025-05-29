@@ -18,7 +18,6 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="/eggsinthetray/assets/css/main.css" />
     <!-- 애니 -->
     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
-    <% String memberId = (String) session.getAttribute("memberId"); %>
     <script>
         var memberId = "<%= memberId %>";
         console.log("main.jsp memberId: " + memberId);
