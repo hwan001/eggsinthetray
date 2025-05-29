@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 @ServerEndpoint("/game/{roomId}")
 public class GameSocket {
     private static Map<String, Set<Session>> roomSessions = new ConcurrentHashMap<>(); // 방별로 세션을 Set으로 관리
-    private static Map<String, List<Session>> roomSessionsOrder = new ConcurrentHashMap<>(); // 방 별로 세션 접속을 List로 관리 (접속 순서)
+    private static Map<String, List<Session>> roomSessionsOrder = new ConcurrentHashMap<>(); // 방 별로 세션 접속을 List로 관리 (접속
+                                                                                             // 순서)
     private static Map<Session, String> sessionUserMap = new ConcurrentHashMap<>(); // 세션별로 유저이름을 맵핑
     private static Map<String, Stack<Move>> boardStackMap = new ConcurrentHashMap<>(); // 방별로 게임 진행 상황을 스택으로 관리함
     private static Map<String, String> roomTurnMap = new ConcurrentHashMap<>(); // 방별로 턴을 관리함
@@ -28,7 +29,9 @@ public class GameSocket {
     private static final int BOARD_COLS = 15;
 
     // 서버 실행 시 1회만 실행
-    // private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();// 비데몬 스레드라 메인 스레드가 종료되어도 살아남는 경우가 있음, 아래처럼 데몬 스레드로 변경해줘야 같이 종료됨
+    // private static final ScheduledExecutorService scheduler =
+    // Executors.newSingleThreadScheduledExecutor();// 비데몬 스레드라 메인 스레드가 종료되어도 살아남는
+    // 경우가 있음, 아래처럼 데몬 스레드로 변경해줘야 같이 종료됨
     private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
         Thread t = new Thread(r);
         t.setDaemon(true);
@@ -87,7 +90,7 @@ public class GameSocket {
         if ("start".equals(type)) {
             List<Session> order = roomSessionsOrder.get(roomId);
 
-            roomTurnMap.put(roomId, "B");  // 흑돌부터 시작
+            roomTurnMap.put(roomId, "B"); // 흑돌부터 시작
 
             for (Session s : roomSessions.get(roomId)) {
                 int index = order.indexOf(s);
@@ -106,7 +109,7 @@ public class GameSocket {
             int x = json.getInt("x");
             int y = json.getInt("y");
 
-            String currentTurn = roomTurnMap.get(roomId);  // 현재 차례
+            String currentTurn = roomTurnMap.get(roomId); // 현재 차례
             String myColor = getColorForSession(session, roomId); // 현재 세션의 색상
 
             // 본인 차례가 아니면 무시
@@ -133,7 +136,7 @@ public class GameSocket {
             board = getCurrentBoard(roomId);
             int winner = gameMapCheck(board, x, y);
             if (winner != 0) {
-                String winnerColor = (winner == 1)? "B" : "W";
+                String winnerColor = (winner == 1) ? "B" : "W";
                 System.out.printf("승자 발생 : %s", winnerColor);
                 handleGameEnd(roomId, winnerColor);
                 return;
@@ -250,7 +253,8 @@ public class GameSocket {
 
         // System.out.println("boardStackMap size: " + stack.size());
         for (Move move : stack) {
-            // System.out.printf("Move: (%d, %d) color=%d\n", move.getX(), move.getY(), move.getColor());
+            // System.out.printf("Move: (%d, %d) color=%d\n", move.getX(), move.getY(),
+            // move.getColor());
             board[move.getY()][move.getX()] = move.getColor(); // y, x 순서 주의
         }
 
@@ -272,26 +276,30 @@ public class GameSocket {
         int index = order.indexOf(session);
         return (index == 0) ? "W" : (index == 1) ? "B" : "E";
     }
+
     private int gameMapCheck(int[][] board, int x, int y) {
         int color = board[y][x];
 
         // 보드 출력
-        /*System.out.println("gameMapCheck.currentBoard:");
-        for (int i = 0; i < BOARD_ROWS; i++) {
-            for (int j = 0; j < BOARD_COLS; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("gameMapCheck.color: " + color + ", x:" + x + ", y:" + y);*/
+        /*
+         * System.out.println("gameMapCheck.currentBoard:");
+         * for (int i = 0; i < BOARD_ROWS; i++) {
+         * for (int j = 0; j < BOARD_COLS; j++) {
+         * System.out.print(board[i][j] + " ");
+         * }
+         * System.out.println();
+         * }
+         * System.out.println("gameMapCheck.color: " + color + ", x:" + x + ", y:" + y);
+         */
 
-        if (color == 0) return 0;
+        if (color == 0)
+            return 0;
 
         int[][] directions = {
-                {0, 1},   // →
-                {1, 0},   // ↓
-                {1, 1},   // ↘
-                {1, -1}   // ↙
+                { 0, 1 }, // →
+                { 1, 0 }, // ↓
+                { 1, 1 }, // ↘
+                { 1, -1 } // ↙
         };
 
         for (int[] dir : directions) {
@@ -299,7 +307,8 @@ public class GameSocket {
             count += countStones(board, x, y, dir[0], dir[1], color);
             count += countStones(board, x, y, -dir[0], -dir[1], color);
 
-            if (count >= 5) return color;
+            if (count >= 5)
+                return color;
         }
 
         return 0;
@@ -318,6 +327,7 @@ public class GameSocket {
 
         return count;
     }
+
     private void handleGameEnd(String roomId, String winnerColor) {
         for (Session s : roomSessions.get(roomId)) {
             String userId = sessionUserMap.get(s);
@@ -351,4 +361,3 @@ public class GameSocket {
     }
 
 }
-

@@ -17,19 +17,10 @@
         <script src="${pageContext.request.contextPath}/assets/js/game.js" defer></script>
         <script src="${pageContext.request.contextPath}/assets/js/chat.js"></script>
 
-        <%
-            String roomId=request.getParameter("roomId");
-            String userId=request.getParameter("userId");
-
-            int rows = 15;
-            int cols = 15;
-
-            String rowsParam = request.getParameter("rows");
-            String colsParam = request.getParameter("cols");
-
-            if (rowsParam != null) rows = Integer.parseInt(rowsParam);
-            if (colsParam != null) cols = Integer.parseInt(colsParam);
-        %>
+        <% String roomId=request.getParameter("roomId"); String userId=request.getParameter("userId"); int rows=15; int
+            cols=15; String rowsParam=request.getParameter("rows"); String colsParam=request.getParameter("cols"); if
+            (rowsParam !=null) rows=Integer.parseInt(rowsParam); if (colsParam !=null) cols=Integer.parseInt(colsParam);
+            %>
     </head>
 
     <body>
@@ -49,8 +40,53 @@
 
             <div id="boardWrapper"></div>
 
+            <!-- 방제목 UI -->
+            <div id="section_room_title">
+                <div class="content_room_title">[공개] 방이름이름이름</div>
+            </div>
+
             <!-- 프로필 UI -->
+            <div id="section_profile">
+                <!-- 백돌 프로필 -->
+                <div class="content_profile_frame white">
+                    <div class="profile_level"></div>
+                    <div class="profile_img" id="profile_img_white"></div>
+                    <!-- 유저 정보 -->
+                    <div class="profile_user_info">
+                        <div class="profile_name"></div>
+                        <div class="profile_record"></div>
+                        <div class="profile_win_rate"></div>
+                    </div>
+                    <!-- 흑백바둑돌 -->
+                    <div class="profile_egg_box">
+                        <div class="profile_egg_image"></div>
+                        <div class="profile_egg_text"></div>
+                    </div>
+                </div>
+                <!-- 흑돌 프로필 -->
+                <div class="content_profile_frame black">
+                    <div class="profile_level"></div>
+                    <div class="profile_img" id="profile_img_black"></div>
+                    <div class="profile_user_info">
+                        <div class="profile_name"></div>
+                        <div class="profile_record"></div>
+                        <div class="profile_win_rate"></div>
+                    </div>
+                    <div class="profile_egg_box">
+                        <div class="profile_egg_image"></div>
+                        <div class="profile_egg_text"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 타이머 프로그래스바 -->
+            <div id="section_timer">
+                <div class="content_timer_text" id="timerText">20</div>
+                <div class="content_timer_wrap">
+                    <div class="timer_fill" id="fillBar"></div>
+                </div>
+            </div>
+
 
             <!-- 채팅 UI -->
             <div id="section_chat">
