@@ -23,6 +23,11 @@ public class RoomService {
             .toList();
     }
 
+    public RoomResponse getRoomById(String roomId) {
+        RoomVO roomVO = roomDAO.selectRoomById(roomId);
+        return RoomResponse.from(roomVO);
+    }
+
     public RoomResponse createRoom(RoomRequest roomReq) {
         RoomVO roomVO = RoomVO.builder()
             .roomId(UUID.randomUUID().toString().substring(0, 10))

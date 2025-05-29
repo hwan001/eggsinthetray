@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.RoomDAO;
 import dto.PasswordRequest;
+import dto.RoomResponse;
 import dto.SuccessResponse;
 import lombok.extern.slf4j.Slf4j;
 import service.RoomService;
@@ -20,6 +21,16 @@ import java.io.IOException;
 public class RoomDetailServlet extends HttpServlet {
 
     private final RoomService roomService = new RoomService(new RoomDAO());
+
+    // 방 정보 조회
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        log.info("[GET] RoomDetailServlet 호출 - 방 정보 조회");
+        String roomId = request.getPathInfo().substring(1);
+        RoomResponse roomRes = roomService.getRoomById(roomId);
+        JsonUtil.writeResponse(response, roomRes);
+    }
 
     // 방 비밀번호 입력
     @Override
