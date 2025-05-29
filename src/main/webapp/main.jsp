@@ -18,13 +18,12 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="/eggsinthetray/assets/css/main.css" />
     <!-- 애니 -->
     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
-    <% String memberId = (String) session.getAttribute("memberId"); %>
     <script>
         var memberId = "<%= memberId %>";
         console.log("main.jsp memberId: " + memberId);
     </script>
     <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
-    <script src="/eggsinthetray/assets/js/main.js"></script>
+    <script src="/eggsinthetray/assets/js/main.js" defer></script>
     <!-- 이벤트 넣기 -->
     <link
       rel="stylesheet"

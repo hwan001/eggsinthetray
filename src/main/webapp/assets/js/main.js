@@ -56,7 +56,7 @@ function setupRoomModalEvents() {
       });
       if (response.ok) {
         const result = await response.json();
-        window.location.href = `/eggsinthetray/game.jsp?roomId=${result.roomId}`;
+        window.location.href = `/eggsinthetray/game.jsp?roomId=${result.roomId}&userId=${memberId}`;
       } else {
         const error = await response.text();
         alert('방 생성에 실패했습니다: ' + error);
@@ -109,7 +109,7 @@ function attachJoinEvents() {
 }
 
 function enterPublicRoom(roomId) {
-  location.href = `/eggsinthetray/game?roomId=${roomId}`;
+  location.href = `/eggsinthetray/game.jsp?roomId=${roomId}&userId=${memberId}`;
 }
 
 function showPasswordModal(roomId) {
