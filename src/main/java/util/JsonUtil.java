@@ -18,6 +18,10 @@ public class JsonUtil {
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .create();
+
+    public static <T> T fromJson(String json, Class<T> classType) {
+        return gson.fromJson(json, classType);
+    }
     
     public static <T> T readRequest(HttpServletRequest request, Class<T> classType) throws IOException {
         request.setCharacterEncoding("UTF-8");

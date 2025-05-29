@@ -14,21 +14,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URI;
+import org.json.JSONObject;
 
-import org.json.JSONObject;;
+import lombok.extern.slf4j.Slf4j;;
 
+@Slf4j
 @WebServlet("/kakaocallback")
 public class KakaoCallbackServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-    public KakaoCallbackServlet() {
-        super();
-    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		log.info("[GET] KakaoCallbackServlet 호출");
+		
 		String code = request.getParameter("code");
 		String tokenUrl = "https://kauth.kakao.com/oauth/token";
 		
-		URL url = new URL(tokenUrl);
+		URL url = URI.create(tokenUrl).toURL();
 	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	    
 	    
@@ -39,7 +40,7 @@ public class KakaoCallbackServlet extends HttpServlet {
 	    // body 파라미터 만들기
 	    String clientId = getServletContext().getInitParameter("kakao.client_id");
 		String redirectCallback = getServletContext().getInitParameter("kakao.redirect_uri_callback");
-
+		
 	    String body = "grant_type=authorization_code"
 	                + "&client_id=" + clientId
 	                + "&redirect_uri=" + redirectCallback
@@ -59,24 +60,20 @@ public class KakaoCallbackServlet extends HttpServlet {
 	    }
 	    br.close();
 	    //토큰 결과 전체
-	    System.out.println("Token Response: " + sb.toString());
+	    log.info("Token Response: " + sb.toString());
 	    
 	    //access 토큰만 뽑기 
 	    JSONObject json = new JSONObject(sb.toString());
 	    String accessToken = json.getString("access_token");
 	    
-	    System.out.println("access token: " + accessToken);
+	    log.info("access token: " + accessToken);
 	    
 	    //accessToken session에 저장해서ProfileServlet에 쓰기
 	    HttpSession session = request.getSession();
 	    session.setAttribute("accessToken", accessToken);
+		
 	    response.sendRedirect("profileservlet");
 	    
 	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }
 
