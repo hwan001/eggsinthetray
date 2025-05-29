@@ -14,7 +14,7 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>🐣 Eggs in the Tray 🐣</title>
     <link rel="stylesheet" href="/eggsinthetray/assets/css/main.css" />
     <!-- 애니 -->
     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
@@ -24,6 +24,25 @@ pageEncoding="UTF-8"%>
     </script>
     <script src="/eggsinthetray/assets/js/clickEffect.js"></script>
     <script src="/eggsinthetray/assets/js/main.js" defer></script>
+    <!-- 배경음악 재생 스크립트 -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const backgroundMusic = document.getElementById('background_music');
+        backgroundMusic.play();
+
+        // 음소거 버튼 기능 추가
+        const soundBtn = document.getElementById('soundBtn');
+        soundBtn.addEventListener('click', function() {
+          if (backgroundMusic.paused) {
+            backgroundMusic.play();
+            soundBtn.querySelector('img').src = './assets/images/mainSpeaker.png';
+          } else {
+            backgroundMusic.pause();
+            soundBtn.querySelector('img').src = './assets/images/mainSpeakerMute.png';
+          }
+        });
+      });
+    </script>
     <!-- 이벤트 넣기 -->
     <link
       rel="stylesheet"
@@ -32,6 +51,13 @@ pageEncoding="UTF-8"%>
   </head>
   <body>
     <div id="wrapper">
+      <!-- 배경음악 -->
+      <audio
+        id="background_music"
+        src="${pageContext.request.contextPath}/assets/sound/nemo.mp3"
+        loop
+        preload="auto"
+      ></audio>
       <!-- 오디오추가 -->
       <audio
         id="click_sound"
@@ -72,22 +98,35 @@ pageEncoding="UTF-8"%>
             <button class="createBtn clickEffect" id="createRoomBtn"></button>
           </div>
         </div>
-        <!-- 오른쪽(프로필 정보는 더미) -->
+        <!-- 오른쪽(프로필 정보) -->
         <div class="section_right">
           <div class="content_profile">
-            <div class="item" id="item_profile"></div>
-            <div class="item" id="item_memberInfo">
-              <div class="item" id="item_nickname">AVGMAX 님</div>
-              <div class="item" id="item_exp">
-                <!--경험치 바(추후 애니메이션 추가)-->
-                <div class="exp-bar-fill" style="width: 70%"></div>
-              </div>
-              <div class="play_box">
-                <div class="item" id="item_play">경기수 &nbsp&nbsp20</div>
-                <div class="item" id="item_win">
-                  승수&nbsp&nbsp&nbsp&nbsp&nbsp 10
+            <div id="item_profile">
+              <img src="${memberData.imageUrl}" alt="${memberData.nickname}">
+            </div>
+            <div id="item_memberInfo">
+              <div class="member-nickname">${memberData.nickname}</div>
+              <div class="exp-container">
+                <div id="item_exp">
+                  <div class="exp-bar-fill">
+                    
+                  </div>
+                  <div class="exp-text">Lv.${memberData.memberLevel}</div>
                 </div>
-                <div class="item" id="item_winRate">승률 50%</div>
+              </div>
+              <div class="stats-container">
+                <div class="stat-item">
+                  <div class="stat-label">경기수</div>
+                  <div class="stat-value" id="play-count">${memberData.playCnt}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">승리</div>
+                  <div class="stat-value" id="win-count">${memberData.winCnt}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">승률</div>
+                  <div class="stat-value" id="win-rate">${memberData.winRate}%</div>
+                </div>
               </div>
             </div>
           </div>

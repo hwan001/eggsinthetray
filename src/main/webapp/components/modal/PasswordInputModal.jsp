@@ -31,6 +31,7 @@
             align-items: center;
             padding: 2rem;
             z-index: 9999;
+            border: 3px solid #522B09;
         }
 
         #password_input_form {

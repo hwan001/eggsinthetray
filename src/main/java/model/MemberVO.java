@@ -24,6 +24,10 @@ public class MemberVO {
         } else {
             this.memberExp += 1;
         }
-        this.memberLevel = (this.memberExp / 5) + 1;
+        int totalExp = 5 + (this.memberLevel - 1) * 3;
+        if (this.memberExp >= totalExp) {
+            this.memberExp %= totalExp;
+            this.memberLevel += 1;
+        }
     }
 }

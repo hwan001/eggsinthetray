@@ -15,6 +15,7 @@ public class MemberResponse {
     private double winRate;
     private int memberLevel;
     private int memberExp;
+    private int totalExp;
 
     public static MemberResponse from(MemberVO memberVO) {
         return MemberResponse.builder()
@@ -26,6 +27,7 @@ public class MemberResponse {
             .winRate(memberVO.getPlayCnt() > 0 ? Math.round(((double) memberVO.getWinCnt() / memberVO.getPlayCnt()) * 100 * 100) / 100.0 : 0.0)
             .memberLevel(memberVO.getMemberLevel())
             .memberExp(memberVO.getMemberExp())
+            .totalExp(5 + (memberVO.getMemberLevel() - 1) * 3)
             .build();
     }
 }
