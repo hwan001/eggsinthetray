@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url('https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css');
 
-.center {
+    .center {
         display: flex;
         justify-content: center; /* 가로 가운데 */
         align-items: center; /* 세로 가운데 */
@@ -13,15 +13,24 @@
         width: 1280px;
         height: 832px;
         transform: translate(-50%, -50%);
-        background-image: url("../images/loginBackGroundNew.png");
+        background-image: url("../images/loginBackGround.png");
+        background-size: contain;
         background-repeat: no-repeat;
         z-index: -1;
       }
       main {
+        position: relative;
         flex-direction: column;
         margin-top: 130px;
         text-align: center;
         color: #492403;
+      }
+      main > img{
+         position: absolute;
+         width: 330px;
+         height: 330px;
+         left: 20px;
+         bottom: -100px;
       }
 
       main #content_title {
@@ -63,3 +72,4 @@
       	text-decoration: none; /* 밑줄 제거 */
   		color: inherit;
       }
+
