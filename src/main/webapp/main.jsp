@@ -44,17 +44,13 @@ pageEncoding="UTF-8"%>
 
         //이미지
           const memberLevel = Number("${memberData.memberLevel}");
-          let piyoImg = '';
-          if (memberLevel === 0) {
-            piyoImg = './assets/images/loginPip.GIF';
-          } else if (memberLevel === 1) {
-            piyoImg = './assets/images/mainPiyo.GIF';
+          const piyo = document.querySelector(".content_piyo");
+          if (memberLevel === 1 ) {
+            piyo.querySelector('img').src = './assets/images/loginPip.GIF';
           } else if (memberLevel === 2) {
-            piyoImg = './assets/images/resultWin.GIF';
-          }
-          const piyoImgEl = document.querySelector('.content_piyo img');
-          if (piyoImgEl) {
-            piyoImgEl.src = piyoImg;
+            piyo.querySelector('img').src = './assets/images/mainPiyo.GIF';
+          } else if (memberLevel === 3) {
+            piyo.querySelector('img').src = './assets/images/resultWin.GIF';
           }
       });
     </script>
@@ -147,7 +143,7 @@ pageEncoding="UTF-8"%>
           </div>
           <!-- 레벨 별 이미지 변화 -->
           <div class="content_piyo">
-            <img src="./assets/images/mainPiyo.GIF" alt="병아리"/>
+            <img src="./assets/images/loginPip.GIF" alt="병아리"/>
           </div>
         </div>
       </main>
