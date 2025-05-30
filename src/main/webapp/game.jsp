@@ -8,6 +8,9 @@
         <title>🐣 Eggs in the Tray 🐣</title>
         <!-- 폰트 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css" />
+        <!--flip -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/flipEffect.css" />
+        <script src="/eggsinthetray/assets/js/flipEffect.js"></script>
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/game.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chat.css">
@@ -31,6 +34,7 @@
                 src="${pageContext.request.contextPath}/assets/sound/click_effect.mp3"
                 preload="auto">
         </audio>
+
 
         <!-- 배경 UI -->
         <div id="wrapper">
@@ -60,7 +64,7 @@
                 
                 <div class="section_profile" id="section_profile">
                     <!-- 백돌 프로필 -->
-                    <div class="content_profile_frame white">
+                    <div class="content_profile_frame white flipEffect">
                         <div class="profile_level"></div>
                         <div class="profile_img" id="profile_img_white"></div>
                         <div class="profile_user_info_wrapper">
@@ -77,7 +81,7 @@
                     </div>
 
                     <!-- 흑돌 프로필 -->
-                    <div class="content_profile_frame black">
+                    <div class="content_profile_frame black flipEffect">
                         <div class="profile_level"></div>
                         <div class="profile_img" id="profile_img_black"></div>
                         <div class="profile_user_info_wrapper">

@@ -41,6 +41,21 @@ pageEncoding="UTF-8"%>
             soundBtn.querySelector('img').src = './assets/images/mainSpeakerMute.png';
           }
         });
+
+        //이미지
+          const memberLevel = Number("${memberData.memberLevel}");
+          let piyoImg = '';
+          if (memberLevel === 0) {
+            piyoImg = './assets/images/loginPip.GIF';
+          } else if (memberLevel === 1) {
+            piyoImg = './assets/images/mainPiyo.GIF';
+          } else if (memberLevel === 2) {
+            piyoImg = './assets/images/resultWin.GIF';
+          }
+          const piyoImgEl = document.querySelector('.content_piyo img');
+          if (piyoImgEl) {
+            piyoImgEl.src = piyoImg;
+          }
       });
     </script>
     <!-- 이벤트 넣기 -->
@@ -130,11 +145,13 @@ pageEncoding="UTF-8"%>
               </div>
             </div>
           </div>
+          <!-- 레벨 별 이미지 변화 -->
           <div class="content_piyo">
-            <img src="./assets/images/mainPiyo.GIF" />
+            <img src="./assets/images/mainPiyo.GIF" alt="병아리"/>
           </div>
         </div>
       </main>
+
 
       <!-- 하단 버튼 -->
       <div class="section_bottom">
