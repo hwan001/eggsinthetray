@@ -4,6 +4,7 @@
 
     <head>
         <meta charset="UTF-8">
+        <meta name="websocket-protocol" content="${initParam['websocket.protocol']}">
         <title>🐣 Eggs in the Tray 🐣</title>
         <!-- 폰트 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css" />
@@ -63,14 +64,16 @@
                     <div class="content_profile_frame white">
                         <div class="profile_level"></div>
                         <div class="profile_img" id="profile_img_white"></div>
-                        <div class="profile_user_info">
-                            <div class="profile_name"></div>
-                            <div class="profile_record"></div>
-                            <div class="profile_win_rate"></div>
-                        </div>
-                        <div class="profile_egg_box">
-                            <div class="profile_egg_image"></div>
-                            <div class="profile_egg_text"></div>
+                        <div class="profile_user_info_wrapper">
+                            <div class="profile_user_info">
+                                <div class="profile_name"></div>
+                                <div class="profile_record"></div>
+                                <div class="profile_win_rate"></div>
+                            </div>
+                            <div class="profile_egg_box">
+                                <div class="profile_egg_image"></div>
+                                <div class="profile_egg_text"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -78,14 +81,16 @@
                     <div class="content_profile_frame black">
                         <div class="profile_level"></div>
                         <div class="profile_img" id="profile_img_black"></div>
-                        <div class="profile_user_info">
-                            <div class="profile_name"></div>
-                            <div class="profile_record"></div>
+                        <div class="profile_user_info_wrapper">
+                            <div class="profile_user_info">
+                                <div class="profile_name"></div>
+                                <div class="profile_record"></div>
                             <div class="profile_win_rate"></div>
-                        </div>
-                        <div class="profile_egg_box">
-                            <div class="profile_egg_image"></div>
-                            <div class="profile_egg_text"></div>
+                            </div>
+                            <div class="profile_egg_box">
+                                <div class="profile_egg_image"></div>
+                                <div class="profile_egg_text"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

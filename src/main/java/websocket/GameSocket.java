@@ -23,7 +23,8 @@ public class GameSocket {
     private static Map<Session, String> sessionUserMap = new ConcurrentHashMap<>(); // 세션별로 유저이름을 맵핑
     private static Map<String, Stack<Move>> boardStackMap = new ConcurrentHashMap<>(); // 방별로 게임 진행 상황을 스택으로 관리함
     private static Map<String, String> roomTurnMap = new ConcurrentHashMap<>(); // 방별로 턴을 관리함
-    
+    private static Map<String, JSONObject> roomPlayersMap = new ConcurrentHashMap<>(); // 방별로 플레이어 정보를 관리함
+
     private static final int BOARD_ROWS = 15;
     private static final int BOARD_COLS = 15;
 
@@ -88,21 +89,45 @@ public class GameSocket {
 
         if ("start".equals(type)) {
             List<Session> order = roomSessionsOrder.get(roomId);
+            String userId = sessionUserMap.get(session);
+            
+            // 현재 플레이어의 색상 결정
+            int index = order.indexOf(session);
+            String color = (index == 0) ? "W" : (index == 1) ? "B" : "E";
 
-            roomTurnMap.put(roomId, "B"); // 흑돌부터 시작
+            // 응답 메시지 구성
+            JSONObject out = new JSONObject();
+            out.put("type", "start");
+            out.put("color", color);
 
-            for (Session s : roomSessions.get(roomId)) {
-                int index = order.indexOf(s);
-                String color = (index == 0) ? "W" : (index == 1) ? "B" : "E";
+            // 기존 플레이어 정보 추가
+            if (index == 1) { // 두 번째 플레이어인 경우
+                Session firstPlayerSession = order.get(0);
+                String firstPlayerId = sessionUserMap.get(firstPlayerSession);
+                out.put("existingPlayerId", firstPlayerId);
+                out.put("existingPlayerColor", "W");
+            }
 
-                JSONObject out = new JSONObject();
-                out.put("type", "start");
-                out.put("color", color);
+            // 현재 세션에 메시지 전송
+            if (session.isOpen()) {
+                session.getBasicRemote().sendText(out.toString());
+            }
 
-                if (s.isOpen()) {
-                    s.getBasicRemote().sendText(out.toString());
+            // 다른 플레이어들에게 새로운 플레이어 입장을 알림
+            if (color.equals("B") || color.equals("W")) {
+                JSONObject notification = new JSONObject();
+                notification.put("type", "player_joined");
+                notification.put("color", color);
+                notification.put("userId", userId);
+
+                for (Session s : roomSessions.get(roomId)) {
+                    if (s != session && s.isOpen()) {
+                        s.getBasicRemote().sendText(notification.toString());
+                    }
                 }
             }
+
+            roomTurnMap.put(roomId, "B"); // 흑돌부터 시작
         } else if ("move".equals(type)) {
             String senderId = sessionUserMap.get(session);
             int x = json.getInt("x");
@@ -261,6 +286,7 @@ public class GameSocket {
                 roomSessionsOrder.remove(roomId);
                 boardStackMap.remove(roomId);
                 roomTurnMap.remove(roomId);
+                roomPlayersMap.remove(roomId); // roomPlayersMap도 정리
                 System.out.println("Room removed: " + roomId);
             }
         }
