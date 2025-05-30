@@ -137,9 +137,14 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    margin-left: 50px;
     padding: 0;
-    margin: 0;
+
+    position: relative;  /* 위치 지정 가능하게 */
+    top: 20px;            /* 아래로 20px 이동 */
 }
+
+
 
 .chickHead {
     width: 68px;
@@ -149,8 +154,6 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-
-
 
 /* ===============================
     타이머
@@ -180,11 +183,14 @@
 
 .content_timer_text {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 36px;
     color: #000;
     width: 40px;
     text-align: right;
     margin-bottom: 80px;
+    font-family: "Galmuri11";
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .content_timer_wrap {
@@ -196,6 +202,7 @@
     overflow: hidden;
     border: 5px solid #EBAB16;
     border-radius: 20px;
+
 }
 
 .timer_fill {
