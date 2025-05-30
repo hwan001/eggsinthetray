@@ -1,0 +1,17 @@
+
+.flip-scale {
+  animation: flip-scale-up 0.5s linear both;
+  transform-style: preserve-3d;
+}
+
+@keyframes flip-scale-up {
+  0% {
+    transform: scale(1) rotateY(0deg);
+  }
+  50% {
+    transform: scale(2.5) rotateY(180deg);
+  }
+  100% {
+    transform: scale(1) rotateY(360deg);
+  }
+}

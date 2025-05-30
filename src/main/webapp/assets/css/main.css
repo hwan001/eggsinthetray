@@ -382,6 +382,7 @@ main {
   position: fixed;
   bottom: 20px;
   right: 50px;
+  margin-right: 80px;
   z-index: 1000;
   width: 80%;
   max-width: 300px;
