@@ -126,6 +126,17 @@ function gameQuit() {
     }
 }
 
+function gameMoveBack() {
+    const moveBackMessage = {
+        type: "undo",
+        message: "상대방이 무르기 요청을 보냈습니다."
+    };
+
+    if (gameWebSocket && gameWebSocket.readyState === WebSocket.OPEN) {
+        gameWebSocket.send(JSON.stringify(moveBackMessage));
+    }
+}
+
 
 function renderMap(mapData) {
     const container = document.getElementById('boardWrapper');
