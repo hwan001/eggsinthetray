@@ -23,7 +23,7 @@ public class GameSocket {
     private static Map<Session, String> sessionUserMap = new ConcurrentHashMap<>(); // 세션별로 유저이름을 맵핑
     private static Map<String, Stack<Move>> boardStackMap = new ConcurrentHashMap<>(); // 방별로 게임 진행 상황을 스택으로 관리함
     private static Map<String, String> roomTurnMap = new ConcurrentHashMap<>(); // 방별로 턴을 관리함
-
+    
     private static final int BOARD_ROWS = 15;
     private static final int BOARD_COLS = 15;
 
@@ -149,10 +149,71 @@ public class GameSocket {
             roomTurnMap.put(roomId, myColor.equals("B") ? "W" : "B");
         } else if ("undo".equals(type)) {
             String senderId = sessionUserMap.get(session);
-            String undoMsg = json.getString("message");
-            System.out.println("undo.senderId : " + senderId);
+            Set<Session> sessions = roomSessions.get(roomId);
 
-        } else if ("quit".equals(type)) {
+            if (sessions != null) {
+                for (Session s : new HashSet<>(sessions)) {
+                    JSONObject out = new JSONObject();
+                    out.put("type", "undo");
+                    out.put("message", senderId + "님이 무르기 요청을 보냈습니다.");
+
+                    try {
+                        s.getBasicRemote().sendText(out.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }else if ("undo_result".equals(type)) {
+            String result = json.getString("result"); // "ok" 또는 "deny"
+            String senderId = json.getString("sender"); // 무르기 요청한 유저
+            
+            Set<Session> sessions = roomSessions.get(roomId);
+
+            if (sessions != null) {
+                if ("ok".equals(result)) {
+                    // 무르기 수락 시 → pop 수행
+                    Stack<Move> stack = boardStackMap.get(roomId);
+                    Move undone = null;
+                    if (stack != null && !stack.isEmpty()) {
+                        undone = stack.pop();
+                    }
+
+                    for (Session s : new HashSet<>(sessions)) {
+                        JSONObject msg = new JSONObject();
+                        msg.put("type", "undo_result");
+                        msg.put("result", "ok");
+
+                        if (undone != null) {
+                            msg.put("x", undone.getX());
+                            msg.put("y", undone.getY());
+                            msg.put("userId", senderId);
+                        }
+
+                        try {
+                            s.getBasicRemote().sendText(msg.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    // 무르기 거절 시
+                    for (Session s : new HashSet<>(sessions)) {
+                        JSONObject msg = new JSONObject();
+                        msg.put("type", "undo_result");
+                        msg.put("result", "deny");
+                        msg.put("userId", senderId);
+
+                        try {
+                            s.getBasicRemote().sendText(msg.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } 
+        else if ("quit".equals(type)) {
             String senderId = sessionUserMap.get(session);
             String quitMsg = json.getString("message");
 

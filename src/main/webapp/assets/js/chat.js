@@ -48,7 +48,7 @@ function sendChatMessage() {
     }
 }
 
-// 웹소켓 초기화 및 이벤트 바인딩
+// 채팅 웹소켓 초기화 및 이벤트 바인딩
 function initChatSocket() {
     const roomId = new URLSearchParams(window.location.search).get("roomId");
     chatSocket = new WebSocket("wss://" + location.host + "/eggsinthetray/chat/" + roomId);
@@ -79,7 +79,6 @@ function initChatSocket() {
     });
 
 
-
     // 시스템 초기 메시지 표시
     appendChatMessage("[시스템] 게임이 시작되었습니다.", "system");
 }
@@ -88,7 +87,7 @@ function initChatSocket() {
 /* --------------------
         프로필
 -------------------- */
-let profileSocket = null;
+// let profileSocket = null; // 소켓 방식이 아니라 API 방식으로 작성이 필요
 
 // 승률 계산
 function calculateWinRate(wins, losses) {
@@ -111,36 +110,36 @@ function renderProfile({ selector, level, name, wins, losses, eggType }) {
             eggType === 'Black' ? '흑돌' : eggType;
 }
 
-// 프로필 웹소켓 연결
-function initProfileSocket() {
-    const roomId = new URLSearchParams(window.location.search).get("roomId");
-    profileSocket = new WebSocket("ws://" + location.host + "/eggsinthetray/profile/" + roomId);
+// // 프로필 웹소켓 연결
+// function initProfileSocket() {
+//     const roomId = new URLSearchParams(window.location.search).get("roomId");
+//     profileSocket = new WebSocket("ws://" + location.host + "/eggsinthetray/profile/" + roomId);
 
-    profileSocket.onmessage = function (event) {
-        const data = JSON.parse(event.data);
+//     profileSocket.onmessage = function (event) {
+//         const data = JSON.parse(event.data);
 
-        if (data.type === "white") {
-            renderProfile({
-                selector: '.content_profile_frame.white',
-                level: data.level,
-                name: data.name,
-                wins: data.wins,
-                losses: data.losses,
-                eggType: 'White'
-            });
-        } else if (data.type === "black") {
-            renderProfile({
-                selector: '.content_profile_frame.black',
-                level: data.level,
-                name: data.name,
-                wins: data.wins,
-                losses: data.losses,
-                eggType: 'Black'
-            });
-        }
-    };
-}
-
+//         if (data.type === "white") {
+//             renderProfile({
+//                 selector: '.content_profile_frame.white',
+//                 level: data.level,
+//                 name: data.name,
+//                 wins: data.wins,
+//                 losses: data.losses,
+//                 eggType: 'White'
+//             });
+//         } else if (data.type === "black") {
+//             renderProfile({
+//                 selector: '.content_profile_frame.black',
+//                 level: data.level,
+//                 name: data.name,
+//                 wins: data.wins,
+//                 losses: data.losses,
+//                 eggType: 'Black'
+//             });
+//         }
+//     };
+// }
+// window.addEventListener("load", initProfileSocket);
 
 window.addEventListener("load", initChatSocket);
-window.addEventListener("load", initProfileSocket);
+

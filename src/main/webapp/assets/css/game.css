@@ -1,19 +1,6 @@
 /* ===============================
     기본 배경 및 전체 레이아웃
 ================================ */
-/* #wrapper {
-    display: flex;
-    flex-direction: row;
-
-    width: 1280px;
-    height: 832px;
-    
-    background-image: url("/eggsinthetray/assets/images/mainBackground.png");
-    background-size: cover;
-    
-    z-index: -1;
-} */
-
 #wrapper {
     position: fixed;
     display: flex;
@@ -75,12 +62,9 @@
 
 
 
-
 /* ===============================
     바둑판 영역
 ================================ */
-
-
 
 #boardWrapper {
     /* position: relative; */
@@ -91,6 +75,7 @@
     z-index: 1;
     width: fit-content;
     height: fit-content;
+    margin-left: 50px;
 }
 
 .boardBlock {
@@ -139,6 +124,7 @@
     background-image: url("/eggsinthetray/assets/images/gameWhiteEgg.png");
 }
 
+
 /* ===============================
     병아리 머리
 ================================ */
@@ -146,11 +132,9 @@
 .chick_head_wrapper {
     display: flex;
     justify-content: space-between;
-
 }
 
 .chickHead {
-    /* position: absolute; */
     width: 68px;
     height: 60px;
     background-image: url("/eggsinthetray/assets/images/gameChickHead.png");
@@ -162,40 +146,7 @@
 /* ===============================
     타이머
 ================================ */
-/* #section_timer {
-    position: relative; 
-    top: 0;
-    left: 0;
-    transform: none;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 12px;
-}
 
-.content_timer_text {
-    font-size: 24px;
-    text-align: center;
-    font-family: "Galmuri11";
-}
-
-.content_timer_wrap {
-    width: 100%;
-    height: 20px;
-    background: #ddd;
-    margin-top: 4px;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.timer_fill {
-    position: relative;
-    height: 100%;
-    width: 100%; 
-    background: green;
-    transition: width 0.3s ease;
-} */
-
-/* 타이머 영역 전체 */
 #section_timer {
     display: flex;
     align-items: center;
@@ -208,16 +159,18 @@
     color: #000;
     width: 40px;
     text-align: right;
+    margin-bottom: 80px;
 }
 
 .content_timer_wrap {
-    width: 300px;
+    width: 600px;
     height: 40px;
     position: relative;
     background-color: #eee;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 70px;
 }
 
 .timer_fill {
@@ -233,8 +186,7 @@
     버튼
 ================================ */
 
-.btn-icon {
-    /* position: fixed; */
+.btn_icon {
     width: 229px;
     height: 65px;
     background-size: contain;
