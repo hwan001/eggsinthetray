@@ -39,6 +39,7 @@ function connectGameWebSocket(roomId, userId) {
 /* 서버에서 받은 JSON 양식 데이터를 기반으로 행동을 핸들링함*/
 async function handleGameMessage(event) {
     const data = JSON.parse(event.data);
+    const roomId = getRoomIdFromURL();
 
     if (data.type === "start") {
         myColor = data.color;

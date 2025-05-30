@@ -80,10 +80,20 @@ function initChatSocket() {
     document.getElementById("chat_input").addEventListener("keydown", function (event) {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-            sendChatMessage();
+            if (!event.isComposing) {  // 한글 조합이 끝났을 때만 전송
+                sendChatMessage();
+            }
         }
     });
 
+    // 한글 입력 완료 이벤트 처리
+    document.getElementById("chat_input").addEventListener("compositionend", function (event) {
+        const input = document.getElementById("chat_input");
+        if (input.value.trim() !== "" && event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            sendChatMessage();
+        }
+    });
 
     // 시스템 초기 메시지 표시
     appendChatMessage("[시스템] 게임이 시작되었습니다.", "system");

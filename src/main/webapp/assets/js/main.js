@@ -149,22 +149,54 @@ function attachJoinEvents() {
     btn.addEventListener("click", () => {
       const isPublic = btn.dataset.public;
       const roomId = btn.dataset.roomId;
-      isPublic === 'N' ? showPasswordModal(roomId) : enterPublicRoom(roomId);
+      isPublic === 'N' ? showPasswordModal(roomId) : enterRoom(roomId);
     });
   });
 }
 
 function showPasswordModal(roomId) {
   showModal("passwordModal", "/eggsinthetray/components/modal/PasswordInputModal.jsp", () => {
+    const form = document.getElementById("password_input_form");
     const input = document.getElementById("password_input");
+    
     if (input) {
       input.focus();
       input.addEventListener("input", handlePasswordInput);
     }
+    
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // 폼의 기본 제출 동작을 막습니다
+        const password = input.value.trim();
+        
+        try {
+          const response = await fetch(`/eggsinthetray/api/rooms/${roomId}/password`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password })
+          });
+
+          const result = await response.json();
+          
+          if (result.success) {
+            enterRoom(roomId);
+          } else {
+            alert('비밀번호가 일치하지 않습니다.');
+            window.location.href = '/eggsinthetray/main.jsp';
+          }
+        } catch (error) {
+          console.error('비밀번호 확인 중 오류 발생:', error);
+          alert('비밀번호 확인 중 오류가 발생했습니다.');
+          window.location.href = '/eggsinthetray/main.jsp';
+        }
+      });
+    }
   });
 }
 
-function enterPublicRoom(roomId) {
+function enterRoom(roomId) {
   location.href = `/eggsinthetray/game.jsp?roomId=${roomId}&userId=${memberId}`;
 }
 
