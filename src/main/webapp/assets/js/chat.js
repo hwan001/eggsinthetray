@@ -1,6 +1,11 @@
 let chatSocket = null;
 let mySessionId = null;
 
+function getWebSocketProtocol() {
+    const metaElement = document.querySelector('meta[name="websocket-protocol"]');
+    return metaElement ? metaElement.getAttribute('content') : 'ws';
+}
+
 // 메시지를 DOM에 추가
 function appendChatMessage(text, direction) {
     const chatDisplay = document.getElementById("chat_display_el");
@@ -51,7 +56,8 @@ function sendChatMessage() {
 // 채팅 웹소켓 초기화 및 이벤트 바인딩
 function initChatSocket() {
     const roomId = new URLSearchParams(window.location.search).get("roomId");
-    chatSocket = new WebSocket("wss://" + location.host + "/eggsinthetray/chat/" + roomId);
+    const protocol = getWebSocketProtocol();
+    chatSocket = new WebSocket(protocol + "://" + location.host + "/eggsinthetray/chat/" + roomId);
 
     chatSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
@@ -110,36 +116,37 @@ function renderProfile({ selector, level, name, wins, losses, eggType }) {
             eggType === 'Black' ? '흑돌' : eggType;
 }
 
-// // 프로필 웹소켓 연결
-// function initProfileSocket() {
-//     const roomId = new URLSearchParams(window.location.search).get("roomId");
-//     profileSocket = new WebSocket("ws://" + location.host + "/eggsinthetray/profile/" + roomId);
+// 프로필 웹소켓 연결
+function initProfileSocket() {
+    const roomId = new URLSearchParams(window.location.search).get("roomId");
+    const protocol = getWebSocketProtocol();
+    profileSocket = new WebSocket(protocol + "://" + location.host + "/eggsinthetray/profile/" + roomId);
 
-//     profileSocket.onmessage = function (event) {
-//         const data = JSON.parse(event.data);
+    profileSocket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
 
-//         if (data.type === "white") {
-//             renderProfile({
-//                 selector: '.content_profile_frame.white',
-//                 level: data.level,
-//                 name: data.name,
-//                 wins: data.wins,
-//                 losses: data.losses,
-//                 eggType: 'White'
-//             });
-//         } else if (data.type === "black") {
-//             renderProfile({
-//                 selector: '.content_profile_frame.black',
-//                 level: data.level,
-//                 name: data.name,
-//                 wins: data.wins,
-//                 losses: data.losses,
-//                 eggType: 'Black'
-//             });
-//         }
-//     };
-// }
-// window.addEventListener("load", initProfileSocket);
+        if (data.type === "white") {
+            renderProfile({
+                selector: '.content_profile_frame.white',
+                level: data.level,
+                name: data.name,
+                wins: data.wins,
+                losses: data.losses,
+                eggType: 'White'
+            });
+        } else if (data.type === "black") {
+            renderProfile({
+                selector: '.content_profile_frame.black',
+                level: data.level,
+                name: data.name,
+                wins: data.wins,
+                losses: data.losses,
+                eggType: 'Black'
+            });
+        }
+    };
+}
+window.addEventListener("load", initProfileSocket);
 
 window.addEventListener("load", initChatSocket);
 

@@ -1,10 +1,16 @@
 let gameWebSocket;
 let myColor = null;
 let serverTurn = null;
+let userId = null;
+
+function getWebSocketProtocol() {
+    const metaElement = document.querySelector('meta[name="websocket-protocol"]');
+    return metaElement ? metaElement.getAttribute('content') : 'ws';
+}
 
 function gameInit() {
     const roomId = getRoomIdFromURL();
-    const userId = getUserIdFromURL();
+    userId = getUserIdFromURL();
     connectGameWebSocket(roomId, userId);
 }
 
@@ -19,7 +25,8 @@ function getUserIdFromURL() {
 }
 
 function connectGameWebSocket(roomId, userId) {
-    gameWebSocket = new WebSocket("wss://" + location.host + "/eggsinthetray/game/" + roomId + "?userId=" + userId);
+    const protocol = getWebSocketProtocol();
+    gameWebSocket = new WebSocket(protocol + "://" + location.host + "/eggsinthetray/game/" + roomId + "?userId=" + userId);
     gameWebSocket.onopen = () => {
         const startMessage = {
             type: "start"
@@ -30,12 +37,45 @@ function connectGameWebSocket(roomId, userId) {
 }
 
 /* 서버에서 받은 JSON 양식 데이터를 기반으로 행동을 핸들링함*/
-function handleGameMessage(event) {
+async function handleGameMessage(event) {
     const data = JSON.parse(event.data);
 
     if (data.type === "start") {
         myColor = data.color;
-        console.log(myColor);
+        
+        try {
+            // 자신의 정보 가져오기
+            const response = await fetch(`/eggsinthetray/api/members/${userId}`);
+            if (!response.ok) throw new Error('프로필 정보를 가져오는데 실패했습니다.');
+            const memberData = await response.json();
+            
+            // 내 정보 업데이트
+            updateGameProfileUI(memberData, myColor);
+
+            // 기존 플레이어 정보가 있다면 가져오기
+            if (data.existingPlayerId) {
+                const existingPlayerResponse = await fetch(`/eggsinthetray/api/members/${data.existingPlayerId}`);
+                if (existingPlayerResponse.ok) {
+                    const existingPlayerData = await existingPlayerResponse.json();
+                    updateGameProfileUI(existingPlayerData, data.existingPlayerColor);
+                }
+            }
+            
+        } catch (error) {
+            console.error('프로필 정보 로딩 실패:', error);
+        }
+    } else if (data.type === "player_joined") {
+        try {
+            // 새로 입장한 플레이어의 정보 가져오기
+            const response = await fetch(`/eggsinthetray/api/members/${data.userId}`);
+            if (!response.ok) throw new Error('상대방 프로필 정보를 가져오는데 실패했습니다.');
+            const memberData = await response.json();
+            
+            // 상대방 정보 업데이트
+            updateGameProfileUI(memberData, data.color);
+        } catch (error) {
+            console.error('상대방 프로필 정보 로딩 실패:', error);
+        }
     } else if (data.type === "quit") {
         const result = data.result || "lose";
         showQuitModal(result);
@@ -69,6 +109,50 @@ function handleGameMessage(event) {
     }
 }
 
+// 게임 프로필 렌더링 함수
+async function renderGameProfile(userId, myColor) {
+    try {
+        console.log("userId : " + userId + " myColor : " + myColor);
+        const response = await fetch(`/eggsinthetray/api/members/${userId}`);
+        if (!response.ok) throw new Error('프로필 정보를 가져오는데 실패했습니다.');
+        
+        const memberData = await response.json();
+        updateGameProfileUI(memberData, myColor);
+        console.log("memberData : " + memberData);
+        console.log("myColor : " + myColor);
+    } catch (error) {
+        console.error('게임 프로필 로딩 실패:', error);
+    }
+}
+
+// 게임 프로필 UI 업데이트 함수
+function updateGameProfileUI(memberData, color) {
+    const profilePosition = color === 'B' ? 'black' : 'white';
+    const profileFrame = document.querySelector(`.content_profile_frame.${profilePosition}`);
+    
+    if (profileFrame) {
+        // 레벨 업데이트
+        profileFrame.querySelector('.profile_level').textContent = `Lv.${memberData.memberLevel}`;
+        
+        // 프로필 이미지 업데이트
+        const profileImgId = color === 'B' ? 'profile_img_black' : 'profile_img_white';
+        const profileImg = document.getElementById(profileImgId);
+        if (profileImg) {
+            profileImg.style.backgroundImage = `url(${memberData.imageUrl})`;
+        }
+        
+        // 유저 정보 업데이트
+        profileFrame.querySelector('.profile_name').textContent = memberData.nickname;
+        profileFrame.querySelector('.profile_record').textContent = `${memberData.winCnt}W ${memberData.playCnt - memberData.winCnt}L`;
+        profileFrame.querySelector('.profile_win_rate').textContent = `승률 ${Math.round(memberData.winRate)}%`;
+        
+        // 달걀 박스 업데이트
+        const eggText = profileFrame.querySelector('.profile_egg_text');
+        if (eggText) {
+            eggText.textContent = color === 'B' ? '흑돌' : '백돌';
+        }
+    }
+}
 
 /* function */
 function showQuitModal(result) {

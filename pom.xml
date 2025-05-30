@@ -16,6 +16,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <websocket.protocol>ws</websocket.protocol>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <websocket.protocol>wss</websocket.protocol>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- WebSocket API -->
         <dependency>
@@ -93,6 +111,12 @@
 
     <build>
         <finalName>eggsinthetray</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <!-- WAR Plugin -->
             <plugin>
@@ -100,6 +124,15 @@
                 <version>3.3.2</version>
                 <configuration>
                     <webappDirectory>${project.build.directory}/eggsinthetray</webappDirectory>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>WEB-INF/web.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
 

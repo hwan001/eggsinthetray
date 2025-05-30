@@ -171,17 +171,13 @@ function enterPublicRoom(roomId) {
 // 프로필 관련 함수들
 async function renderMemberProfile() {
   try {
-    const memberData = await fetchMemberInfo(memberId);
+    const response = await fetch(`/eggsinthetray/api/members/${memberId}`);
+    if (!response.ok) throw new Error('멤버 정보를 가져오는데 실패했습니다.');
+    const memberData = await response.json();
     updateProfileUI(memberData);
   } catch (error) {
     alert('프로필 정보를 불러오는데 실패했습니다.');
   }
-}
-
-async function fetchMemberInfo(memberId) {
-  const response = await fetch(`/eggsinthetray/api/members/${memberId}`);
-  if (!response.ok) throw new Error('멤버 정보를 가져오는데 실패했습니다.');
-  return response.json();
 }
 
 function updateProfileUI(memberData) {
