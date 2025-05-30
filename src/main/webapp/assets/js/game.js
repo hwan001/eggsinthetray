@@ -62,7 +62,7 @@ async function handleGameMessage(event) {
                     updateGameProfileUI(existingPlayerData, data.existingPlayerColor);
                 }
             }
-            
+        
         } catch (error) {
             console.error('프로필 정보 로딩 실패:', error);
         }
@@ -90,6 +90,8 @@ async function handleGameMessage(event) {
         renderMap(data.map);
         console.log("serverTurn : " + serverTurn);
         serverTurn = data.turn
+        startTimer(30);
+
     } else if (data.type === "undo") {
         const userId = data.userId;
         console.log(`플레이어 ${userId}가 둔 수를 무르기 요청 했습니다.`);
@@ -313,7 +315,7 @@ function resetTimer() {
 }
 
 function startTimer(duration) {
-    resetTimer(); // 타이머 시작 전 초기화
+    resetTimer();
     timerValue = 0;
     timerMax = duration;
     updateTimerDisplay();
@@ -350,7 +352,7 @@ function updateTimerDisplay() {
         timerWrap.style.border = "5px solid #EBAB16";
     }
 }
-startTimer(30);
+
 
 
 document.querySelector(".quit_btn").addEventListener("click", gameQuit);
