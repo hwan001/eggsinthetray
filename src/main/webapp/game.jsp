@@ -5,7 +5,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="websocket-protocol" content="${initParam['websocket.protocol']}">
-        <title>🐣 Eggs in the Tray 🐣</title>
+        <title>Eggs in the Tray</title>
+        <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico">
         <!-- 폰트 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css" />
         <!--flip -->

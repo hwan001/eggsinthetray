@@ -14,7 +14,8 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🐣 Eggs in the Tray 🐣</title>
+    <title>Eggs in the Tray</title>
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico">
     <link rel="stylesheet" href="/eggsinthetray/assets/css/main.css" />
     <!-- 애니 -->
     <link rel="stylesheet" href="/eggsinthetray/assets/css/clickEffect.css" />
