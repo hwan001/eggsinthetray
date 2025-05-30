@@ -38,18 +38,17 @@
                 <div id="section_game">
                     <!-- 게임 UI -->
                     <div class="chick_head_wrapper">
-                        <div class="chickHead" style="top: 4%; left: 5%;margin-left: 50px;"></div>
-                        <div class="chickHead" style="top: 4%; right: 47%;margin-right: 50px;"></div>
+                        <div class="chickHead" style="right: 10%;"></div>
+                        <div class="chickHead" style="left: 20%;"></div>
                     </div>
                     <div id="boardWrapper"></div>
                 </div>
 
                 <div id="section_timer">
-                    <!-- 타이머 프로그래스바 -->
-                    <div id="section_timer">
-                        <div class="content_timer_text" id="timerText">20</div>
-                        <div class="content_timer_wrap">
-                            <div class="timer_fill" id="fillBar"></div>
+                    <div class="content_timer_text" id="timerText">30</div>
+                    <div class="content_timer_wrap" id="timer_wrap">
+                        <div class="timer_fill" id="fillBar">
+                            <img src="${pageContext.request.contextPath}/assets/images/mainPiyo.GIF" class="fillbar-img" id="fillBarImg">
                         </div>
                     </div>
                 </div>
@@ -136,5 +135,4 @@
             </div>
         </div>
     </body>
-
-    </html>
+</html>
