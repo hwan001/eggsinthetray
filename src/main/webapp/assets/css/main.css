@@ -53,7 +53,6 @@
 
 .inputWrapper {
   position: relative;
-  width: 400px;
   height: 90%;
   background-color: #fffbf1;
   border-radius: 45px;
@@ -298,9 +297,8 @@ main {
   text-align: center;
   line-height: 50px;
   border-radius: 25px;
+  border: 3px solid #522B09;
 }
-
-
 
 #item_memberInfo {
   position: absolute;
@@ -309,23 +307,22 @@ main {
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-
   gap: 6px;
   width: 75%;
   z-index: 1;
-}
-#item_memberInfo .play_box {
-  text-align: left;
-  margin-top: 10px;
-}
 
-#item_memberInfo .item {
   text-align: center;
   font-family: "galmuri11";
   color: #512d0f;
   font-size: 20px;
   font-weight: 700;
 }
+
+#item_memberInfo .play_box {
+  text-align: left;
+  margin-top: 10px;
+}
+
 .item #item_winRate {
   word-spacing: 37px;
   margin-left: 18px;
@@ -334,30 +331,63 @@ main {
 #item_exp {
   width: 100%;
   height: 20px;
-  background-color: rgba(246, 110, 137, 0.8); /* 80% 불투명 */
+  background-color: rgba(246, 110, 137, 0.8);
   border-radius: 10px;
   overflow: hidden;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .exp-bar-fill {
   height: 100%;
-  background: linear-gradient(to right, #f6d365, #f11440);
   width: 0%;
-  transition: width 0.5s ease;
-  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(0deg, #F0406B 20%, #9E6C3F 30%, #FEB3C5 80%, #FFEEEE 100%);
+  transition: width 1s ease;
+  box-shadow: 0 0 10px rgba(246, 211, 101, 0.5);
+  border-radius: 10px;
+  border: 2px solid #F0406B;
+}
+
+.exp-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  color: #522b09;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 1;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .content_profile item {
   font-family: "galmuri11";
 }
 
+@keyframes flip {
+  0%, 100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(-1);
+  }
+}
+
 .content_piyo img {
+  position: fixed;
+  bottom: 20px;
+  right: 50px;
+  z-index: 1000;
   width: 80%;
   max-width: 300px;
   aspect-ratio: 1 / 1;
   height: auto;
-  margin-top: -100px;
+  animation: flip 2s steps(1) infinite;
 }
 
 /* 모달 */
@@ -385,6 +415,35 @@ main {
   justify-content: center;
   padding: 2rem;
   z-index: 9999;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-label, .stat-value {
+  text-align: center;
+  font-family: "galmuri11";
+  color: #522b09;
+}
+
+.stat-label {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 

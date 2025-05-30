@@ -4,7 +4,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Eggs in the Tray</title>
+        <title>🐣 Eggs in the Tray 🐣</title>
         <!-- 폰트 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css" />
 

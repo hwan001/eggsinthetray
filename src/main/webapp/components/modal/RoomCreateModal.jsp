@@ -22,6 +22,7 @@
             display: flex;
             justify-content: center;
             padding: 2rem;
+            border: 3px solid #522B09;
         }
         .header_background {
             background: #B8988F;
@@ -33,6 +34,7 @@
             top: 0;
             left: 50%;
             transform: translate(-50%, -50%);
+            border: 2px solid #B8988F;
         }
         .header {
             background: #C6ABA3;
