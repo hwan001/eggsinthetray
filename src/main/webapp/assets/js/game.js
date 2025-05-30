@@ -39,14 +39,33 @@ function handleGameMessage(event) {
     } else if (data.type === "quit") {
         const result = data.result || "lose";
         showQuitModal(result);
-        disableGameUI();
+        // disableGameUI();
         updateResult(userId, result);
         deleteRoom(roomId);
     } else if (data.type === "board") {
         renderMap(data.map);
         console.log("serverTurn : " + serverTurn);
         serverTurn = data.turn
+    } else if (data.type === "undo") {
+        const userId = data.userId;
+        console.log(`플레이어 ${userId}가 둔 수를 무르기 요청 했습니다.`);
         
+        const confirmUndo = confirm("상대가 무르기를 요청했습니다. 수락하시겠습니까?");
+        const moveBackMessage = {
+            type: "undo_result",
+            result: confirmUndo ? "ok" : "deny",
+            sender: userId  // 요청자 ID 전달 (필요 시)
+        };
+
+        if (gameWebSocket && gameWebSocket.readyState === WebSocket.OPEN) {
+            gameWebSocket.send(JSON.stringify(moveBackMessage));
+        }
+    } else if (data.type === "undo_result") {
+        if (data.result === "ok") {
+            alert("무르기 요청이 수락되었습니다.");
+        } else {
+            alert("무르기 요청이 거절되었습니다.");
+        }
     }
 }
 
@@ -107,16 +126,6 @@ function gameQuit() {
     }
 }
 
-function gameMoveBack() {
-    const moveBackMessage = {
-        type: "undo",
-        message: "상대방이 무르기 요청을 보냈습니다."
-    };
-
-    if (gameWebSocket && gameWebSocket.readyState === WebSocket.OPEN) {
-        gameWebSocket.send(JSON.stringify(moveBackMessage));
-    }
-}
 
 function renderMap(mapData) {
     const container = document.getElementById('boardWrapper');
@@ -166,7 +175,7 @@ function renderMap(mapData) {
 }
 
 
-document.querySelector(".content_room_title").textContent = "[비공개] 방이름 알려줘";
+document.querySelector(".content_room_title").textContent = "[비공개] 방이름";
 
 
 document.querySelector(".quit_btn").addEventListener("click", gameQuit);

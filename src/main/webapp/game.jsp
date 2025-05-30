@@ -125,8 +125,8 @@
 
                 <!-- 버튼 -->
                  <div id="section_button"> 
-                    <button class="btn-icon moveback_btn clickEffect" aria-label="무르기 버튼"></button>
-                    <button class="btn-icon quit_btn clickEffect" aria-label="기권하기 버튼"></button>
+                    <button class="btn_icon moveback_btn clickEffect" aria-label="무르기 버튼"></button>
+                    <button class="btn_icon quit_btn clickEffect" aria-label="기권하기 버튼"></button>
                 </div>
             </div>
         </div>
