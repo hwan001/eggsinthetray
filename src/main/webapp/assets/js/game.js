@@ -11,6 +11,7 @@ function getWebSocketProtocol() {
 function gameInit() {
     const roomId = getRoomIdFromURL();
     userId = getUserIdFromURL();
+    setRoomTitle(roomId);
     connectGameWebSocket(roomId, userId);
 }
 
@@ -77,6 +78,8 @@ async function handleGameMessage(event) {
         } catch (error) {
             console.error('상대방 프로필 정보 로딩 실패:', error);
         }
+        console.log(myColor);
+        startTimer(30);
     } else if (data.type === "quit") {
         const result = data.result || "lose";
         showQuitModal(result);
@@ -107,6 +110,9 @@ async function handleGameMessage(event) {
         } else {
             alert("무르기 요청이 거절되었습니다.");
         }
+        serverTurn = data.turn;
+        resetTimer();
+        startTimer(30);
     }
 }
 
@@ -201,6 +207,7 @@ function disableGameUI() {
 }
 
 function gameQuit() {
+    console.log("gameQuit() called");
     const quitMessage = {
         type: "quit",
         message: "상대방이 게임 종료 요청을 보냈습니다."
@@ -270,11 +277,82 @@ function renderMap(mapData) {
     container.append(...tiles);
 }
 
+// 방 제목 설정
+function setRoomTitle(roomId) {
+    fetch('/eggsinthetray/api/rooms')
+        .then(response => response.json())
+        .then(roomList => {
+            const matchedRoom = roomList.find(room => room.roomId === roomId);
+            if (matchedRoom) {
+                document.querySelector(".content_room_title").textContent = `[비공개] ${matchedRoom.title}`;
+            } else {
+                document.querySelector(".content_room_title").textContent = "[비공개] 방이름을 찾을 수 없음";
+            }
+        })
+        .catch(error => {
+            document.querySelector(".content_room_title").textContent = "[비공개] 방이름을 불러올 수 없음";
+            console.error("방 목록 불러오기 실패:", error);
+        });
+}
+document.addEventListener("DOMContentLoaded", gameInit);
 
-document.querySelector(".content_room_title").textContent = "[비공개] 방이름";
+
+let timerValue = 0;
+let timerMax = 30;
+let timerInterval = null;
+
+function resetTimer() {
+    const fillBar = document.getElementById("fillBar");
+    const timerText = document.getElementById("timerText");
+    const timerWrap = document.getElementById("timer_wrap");
+    fillBar.style.width = "0%";
+    fillBar.style.backgroundColor = "#FFF158";
+    timerText.textContent = "30";
+    timerText.style.color = "#000";
+    timerWrap.style.border = "5px solid #EBAB16";
+}
+
+function startTimer(duration) {
+    resetTimer(); // 타이머 시작 전 초기화
+    timerValue = 0;
+    timerMax = duration;
+    updateTimerDisplay();
+
+    if (timerInterval) clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+        timerValue++;
+        updateTimerDisplay();
+
+        if (timerValue >= timerMax) {
+            clearInterval(timerInterval);
+            gameQuit();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const remain = timerMax - timerValue;
+    document.getElementById("timerText").textContent = remain;
+
+    const percent = (timerValue / timerMax) * 100;
+    document.getElementById("fillBar").style.width = percent + "%";
+
+    const timerWrap = document.getElementById("timer_wrap");
+
+    if (remain <= 10) {
+        document.getElementById("fillBar").style.backgroundColor = "#F60000";
+        document.getElementById("timerText").style.color = "#F60000";
+        timerWrap.style.border = "1px solid #F60000";
+    } else {
+        document.getElementById("fillBar").style.backgroundColor = "#FFF158";
+        document.getElementById("timerText").style.color = "#000";
+        timerWrap.style.border = "5px solid #EBAB16";
+    }
+}
+startTimer(30);
 
 
 document.querySelector(".quit_btn").addEventListener("click", gameQuit);
 document.querySelector(".moveback_btn").addEventListener("click", gameMoveBack);
 
-window.addEventListener("load", gameInit);
