@@ -93,6 +93,9 @@ async function handleGameMessage(event) {
         if (!timerStatus) startTimer(30);
 
     } else if (data.type === "undo") {
+        /*
+            user1:gameMoveBack -> server:undo -> user2:undo -> server:undo_result -> user1:undo_result
+        */
         const msg = data.message;
         console.log(msg);
         
@@ -109,8 +112,6 @@ async function handleGameMessage(event) {
     } else if (data.type === "undo_result") {
         if (data.result === "ok") {
             alert("무르기 요청이 수락되었습니다.");
-            resetTimer();
-            startTimer(30);
         } else {
             alert("무르기 요청이 거절되었습니다.");
         }

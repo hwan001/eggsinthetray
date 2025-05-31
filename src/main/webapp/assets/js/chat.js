@@ -105,58 +105,59 @@ function initChatSocket() {
 -------------------- */
 // let profileSocket = null; // 소켓 방식이 아니라 API 방식으로 작성이 필요
 
-// 승률 계산
-function calculateWinRate(wins, losses) {
-    const total = wins + losses;
-    return total === 0 ? 0 : Math.round((wins / total) * 100);
-}
+// // 승률 계산
+// function calculateWinRate(wins, losses) {
+//     const total = wins + losses;
+//     return total === 0 ? 0 : Math.round((wins / total) * 100);
+// }
 
-// 프로필 렌더링
-function renderProfile({ selector, level, name, wins, losses, eggType }) {
-    const frame = document.querySelector(selector);
-    frame.querySelector('.profile_level').textContent = `LV ${level}`;
-    frame.querySelector('.profile_name').textContent = name;
-    frame.querySelector('.profile_record').textContent = `${wins}W ${losses}L`;
+// // 프로필 렌더링
+// function renderProfile({ selector, level, name, wins, losses, eggType }) {
+//     const frame = document.querySelector(selector);
+//     frame.querySelector('.profile_level').textContent = `LV ${level}`;
+//     frame.querySelector('.profile_name').textContent = name;
+//     frame.querySelector('.profile_record').textContent = `${wins}W ${losses}L`;
 
-    const winRate = calculateWinRate(wins, losses);
-    frame.querySelector('.profile_win_rate').textContent = `(${winRate}%)`;
+//     const winRate = calculateWinRate(wins, losses);
+//     frame.querySelector('.profile_win_rate').textContent = `(${winRate}%)`;
 
-    frame.querySelector('.profile_egg_text').textContent =
-        eggType === 'White' ? '백돌' :
-            eggType === 'Black' ? '흑돌' : eggType;
-}
+//     frame.querySelector('.profile_egg_text').textContent =
+//         eggType === 'White' ? '백돌' :
+//             eggType === 'Black' ? '흑돌' : eggType;
+// }
 
-// 프로필 웹소켓 연결
-function initProfileSocket() {
-    const roomId = new URLSearchParams(window.location.search).get("roomId");
-    const protocol = getWebSocketProtocol();
-    profileSocket = new WebSocket(protocol + "://" + location.host + "/eggsinthetray/profile/" + roomId);
+// // 프로필 웹소켓 연결
+// function initProfileSocket() {
+//     const roomId = new URLSearchParams(window.location.search).get("roomId");
+//     const protocol = getWebSocketProtocol();
+//     profileSocket = new WebSocket(protocol + "://" + location.host + "/eggsinthetray/profile/" + roomId);
 
-    profileSocket.onmessage = function (event) {
-        const data = JSON.parse(event.data);
+//     profileSocket.onmessage = function (event) {
+//         const data = JSON.parse(event.data);
 
-        if (data.type === "white") {
-            renderProfile({
-                selector: '.content_profile_frame.white',
-                level: data.level,
-                name: data.name,
-                wins: data.wins,
-                losses: data.losses,
-                eggType: 'White'
-            });
-        } else if (data.type === "black") {
-            renderProfile({
-                selector: '.content_profile_frame.black',
-                level: data.level,
-                name: data.name,
-                wins: data.wins,
-                losses: data.losses,
-                eggType: 'Black'
-            });
-        }
-    };
-}
-window.addEventListener("load", initProfileSocket);
+//         if (data.type === "white") {
+//             renderProfile({
+//                 selector: '.content_profile_frame.white',
+//                 level: data.level,
+//                 name: data.name,
+//                 wins: data.wins,
+//                 losses: data.losses,
+//                 eggType: 'White'
+//             });
+//         } else if (data.type === "black") {
+//             renderProfile({
+//                 selector: '.content_profile_frame.black',
+//                 level: data.level,
+//                 name: data.name,
+//                 wins: data.wins,
+//                 losses: data.losses,
+//                 eggType: 'Black'
+//             });
+//         }
+//     };
+// }
+// window.addEventListener("load", initProfileSocket);
+
 
 window.addEventListener("load", initChatSocket);
 

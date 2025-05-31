@@ -191,7 +191,7 @@ public class GameSocket {
             }
         }else if ("undo_result".equals(type)) {
             String result = json.getString("result"); // "ok" 또는 "deny"
-            String senderId = json.getString("sender"); // 무르기 요청한 유저
+            String senderId = json.getString("sender");
             
             Set<Session> sessions = roomSessions.get(roomId);
 
@@ -207,35 +207,39 @@ public class GameSocket {
                     }
 
                     for (Session s : new HashSet<>(sessions)) {
-                        JSONObject msg = new JSONObject();
-                        msg.put("type", "undo_result");
-                        msg.put("result", "ok");
+                        if (!sessionUserMap.get(s).equals(senderId)) {
+                            JSONObject msg = new JSONObject();
+                            msg.put("type", "undo_result");
+                            msg.put("result", "ok");
 
-                        if (undone != null) {
-                            msg.put("x", undone.getX());
-                            msg.put("y", undone.getY());
-                            msg.put("userId", senderId);
-                        }
+                            if (undone != null) {
+                                msg.put("x", undone.getX());
+                                msg.put("y", undone.getY());
+                                msg.put("userId", senderId);
+                            }
 
-                        try {
-                            s.getBasicRemote().sendText(msg.toString());
-                            roomTurnMap.put(roomId, myColor.equals("B") ? "W" : "B");
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            try {
+                                s.getBasicRemote().sendText(msg.toString());
+                                roomTurnMap.put(roomId, myColor.equals("B") ? "W" : "B");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 } else {
                     // 무르기 거절 시
                     for (Session s : new HashSet<>(sessions)) {
-                        JSONObject msg = new JSONObject();
-                        msg.put("type", "undo_result");
-                        msg.put("result", "deny");
-                        msg.put("userId", senderId);
+                        if (!sessionUserMap.get(s).equals(senderId)) {
+                            JSONObject msg = new JSONObject();
+                            msg.put("type", "undo_result");
+                            msg.put("result", "deny");
+                            msg.put("userId", senderId);
 
-                        try {
-                            s.getBasicRemote().sendText(msg.toString());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            try {
+                                s.getBasicRemote().sendText(msg.toString());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
