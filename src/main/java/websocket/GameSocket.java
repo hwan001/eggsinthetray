@@ -152,7 +152,7 @@ public class GameSocket {
                 return;
             }
 
-            // 일단 놓고, 다시 업데이트
+            // 돌이 없으면 일단 놓은 뒤 승패를 판단, 금수는 이 코드 직전이나 승패 판단 이후에 진행 (이 경우 스택에서 pop)
             boardStackMap.computeIfAbsent(roomId, k -> new Stack<>())
                     .push(new Move(x, y, (myColor.equals("B")) ? 1 : 2, senderId));
 
@@ -166,26 +166,26 @@ public class GameSocket {
                 return;
             }
 
-            // 스택에 돌 쌓기 (스택이 없으면 생성해서 쌓고, 있으면 거기에 추가)
-            boardStackMap.computeIfAbsent(roomId, k -> new Stack<>())
-                    .push(new Move(x, y, (myColor.equals("B")) ? 1 : 2, senderId));
-
             // 턴 전환
             roomTurnMap.put(roomId, myColor.equals("B") ? "W" : "B");
         } else if ("undo".equals(type)) {
             String senderId = sessionUserMap.get(session);
             Set<Session> sessions = roomSessions.get(roomId);
+            List<Session> order = roomSessionsOrder.get(roomId);
+            int index = order.indexOf(session);
 
             if (sessions != null) {
                 for (Session s : new HashSet<>(sessions)) {
-                    JSONObject out = new JSONObject();
-                    out.put("type", "undo");
-                    out.put("message", senderId + "님이 무르기 요청을 보냈습니다.");
+                    if (!sessionUserMap.get(s).equals(senderId) && (index == 1 || index == 0)){ // 보낸사람이 본인이 아니고, 해당 유저의 색상이 B 또는 W면
+                        JSONObject out = new JSONObject();
+                        out.put("type", "undo");
+                        out.put("message", senderId + "님이 무르기 요청을 보냈습니다.");
 
-                    try {
-                        s.getBasicRemote().sendText(out.toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        try {
+                            s.getBasicRemote().sendText(out.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -199,6 +199,8 @@ public class GameSocket {
                 if ("ok".equals(result)) {
                     // 무르기 수락 시 → pop 수행
                     Stack<Move> stack = boardStackMap.get(roomId);
+                    String myColor = getColorForSession(session, roomId);
+
                     Move undone = null;
                     if (stack != null && !stack.isEmpty()) {
                         undone = stack.pop();
@@ -217,6 +219,7 @@ public class GameSocket {
 
                         try {
                             s.getBasicRemote().sendText(msg.toString());
+                            roomTurnMap.put(roomId, myColor.equals("B") ? "W" : "B");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -240,8 +243,6 @@ public class GameSocket {
         } 
         else if ("quit".equals(type)) {
             String senderId = sessionUserMap.get(session);
-            String quitMsg = json.getString("message");
-
             System.out.println("quit > senderId : " + senderId);
 
             Set<Session> sessions = roomSessions.get(roomId);
@@ -249,7 +250,6 @@ public class GameSocket {
                 for (Session s : new HashSet<>(sessions)) {
                     JSONObject out = new JSONObject();
                     out.put("type", "quit");
-                    out.put("message", quitMsg);
 
                     if (sessionUserMap.get(s).equals(senderId)) {
                         out.put("result", "lose");

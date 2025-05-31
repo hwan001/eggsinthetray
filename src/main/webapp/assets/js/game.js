@@ -78,23 +78,23 @@ async function handleGameMessage(event) {
         } catch (error) {
             console.error('상대방 프로필 정보 로딩 실패:', error);
         }
-        console.log(myColor);
-        startTimer(30);
+        // console.log(myColor);
+        // startTimer(30);
     } else if (data.type === "quit") {
         const result = data.result || "lose";
-        showQuitModal(result);
-        // disableGameUI();
         updateResult(userId, result);
         deleteRoom(roomId);
+        showQuitModal(result);
     } else if (data.type === "board") {
         renderMap(data.map);
-        console.log("serverTurn : " + serverTurn);
         serverTurn = data.turn
-        startTimer(30);
+        timerStatus = (myColor === serverTurn)? true : false;
+        console.log("serverTurn :" + serverTurn + ", myColor :" + myColor + ", timer init :" +  timerStatus);
+        if (!timerStatus) startTimer(30);
 
     } else if (data.type === "undo") {
-        const userId = data.userId;
-        console.log(`플레이어 ${userId}가 둔 수를 무르기 요청 했습니다.`);
+        const msg = data.message;
+        console.log(msg);
         
         const confirmUndo = confirm("상대가 무르기를 요청했습니다. 수락하시겠습니까?");
         const moveBackMessage = {
@@ -109,12 +109,11 @@ async function handleGameMessage(event) {
     } else if (data.type === "undo_result") {
         if (data.result === "ok") {
             alert("무르기 요청이 수락되었습니다.");
+            resetTimer();
+            startTimer(30);
         } else {
             alert("무르기 요청이 거절되었습니다.");
         }
-        serverTurn = data.turn;
-        resetTimer();
-        startTimer(30);
     }
 }
 
@@ -329,6 +328,7 @@ function startTimer(duration) {
         if (timerValue >= timerMax) {
             clearInterval(timerInterval);
             gameQuit();
+            showQuitModal("lose");
         }
     }, 1000);
 }
@@ -352,7 +352,6 @@ function updateTimerDisplay() {
         timerWrap.style.border = "5px solid #EBAB16";
     }
 }
-
 
 
 document.querySelector(".quit_btn").addEventListener("click", gameQuit);
